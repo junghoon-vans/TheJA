@@ -1,6 +1,5 @@
-package com.example.theja;
+package com.example.theja.busInfo;
 
-import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +9,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.theja.R;
 
 import java.util.List;
 import java.util.Vector;

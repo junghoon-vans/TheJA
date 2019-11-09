@@ -1,4 +1,4 @@
-package com.example.theja;
+package com.example.theja.busInfo;
 
 public class BusStop {
     int arsId; //버스 정류소 번호

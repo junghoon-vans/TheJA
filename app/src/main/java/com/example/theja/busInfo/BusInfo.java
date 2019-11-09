@@ -1,4 +1,4 @@
-package com.example.theja;
+package com.example.theja.busInfo;
 
 import android.util.Log;
 import android.widget.EditText;

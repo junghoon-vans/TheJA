@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TheJA</string>
+    <string name="add_vehicle">대중교통 추가</string>
 </resources>

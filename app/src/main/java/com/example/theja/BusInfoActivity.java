@@ -8,7 +8,19 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.List;
+import java.util.Vector;
+
 public class BusInfoActivity extends AppCompatActivity {
+
+    // layout
+    EditText search;
+    Button search_button;
+
+    // List
+    List<String> stationList = new Vector<>();
+    List<String> vehicleList = new Vector<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

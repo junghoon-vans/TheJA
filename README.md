@@ -1,2 +1,7 @@
-# TheJA
-정신없는 아침시간, 빠르게 필요한 정보만! 조금만 더 자고 학교가자!
+TheJA
+===
+Project in Myongji University major course (Mobile Computing).
+
+![version](https://img.shields.io/badge/Version-1.0.0-green.svg)
+![language](https://img.shields.io/badge/Language-Java-Orange.svg)
+![android](https://img.shields.io/badge/android-application-Blue.svg)

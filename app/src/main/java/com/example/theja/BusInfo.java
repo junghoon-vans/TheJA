@@ -84,4 +84,69 @@ public class BusInfo {
 
         return busStopList;
     }
+
+    List<BusRoute> getBusRoute(int selectedItem, String key){
+        List<BusRoute> busRouteList = new ArrayList<>();
+
+        String queryUrl = "http://ws.bus.go.kr/api/rest/stationinfo/getRouteByStation?serviceKey=" +
+                key + "&arsId=" + selectedItem;
+        try{
+            URL url = new URL(queryUrl); //검색 url
+            InputStream input = url.openStream();
+
+            XmlPullParserFactory factory= XmlPullParserFactory.newInstance();
+            XmlPullParser xpp= factory.newPullParser();
+            xpp.setInput( new InputStreamReader(input, "UTF-8") ); //inputstream 으로부터 xml 입력받기
+
+            String tag, text;
+            boolean busRouteNm = false;
+            boolean stEnd = false;
+
+            xpp.next();
+            int eventType = xpp.getEventType();
+
+            // create busRoute instance
+            BusRoute busRoute = new BusRoute(); // 특정 정류소의 버스 정보
+            while( eventType != XmlPullParser.END_DOCUMENT ){
+
+                switch ( eventType ){
+                    case XmlPullParser.START_DOCUMENT:
+                        break;
+                    case XmlPullParser.START_TAG:
+                        tag = xpp.getName();
+
+                        if(tag.equals("itemList")){
+                            busRoute = new BusRoute();
+                        } else if(tag.equals("busRouteNm")){
+                            busRouteNm = true;
+                        } else if(tag.equals("stEnd")){
+                            stEnd = true;
+                        }
+                        break;
+                    case XmlPullParser.TEXT:
+                        if (busRouteNm){
+                            text = xpp.getText();
+                            busRoute.busRouteNm = text;
+                            busRouteNm = false;
+                        } else if (stEnd){
+                            text = xpp.getText();
+                            busRoute.stEnd = text;
+                            stEnd = false;
+                            busRouteList.add(busRoute);
+                        }
+                        break;
+                    case XmlPullParser.END_TAG:
+                        break;
+                }
+                eventType=xpp.next();
+
+            }
+
+        } catch (Exception e) {
+            Log.e("에러", e.toString());
+        }
+
+        return busRouteList;
+
+    }
 }

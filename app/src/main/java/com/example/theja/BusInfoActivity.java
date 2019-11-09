@@ -3,6 +3,7 @@ package com.example.theja;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ public class BusInfoActivity extends AppCompatActivity {
     List<String> stationList = new Vector<>();
     List<String> vehicleList = new Vector<>();
     List<BusStop> busStopList; // BusStopList
+    List<BusRoute> busRouteList; // BusRouteList
 
     // Search BusInfo
     BusInfo busInfo = new BusInfo();
@@ -84,5 +86,48 @@ public class BusInfoActivity extends AppCompatActivity {
 
             }
         });
+
+        // BusStop ListView Click event
+        stationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                stationListView.setVisibility(View.GONE);
+                vehicleListView.setVisibility(View.VISIBLE);
+
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        final int arsId = busStopList.get(position).arsId; // 선택한 정류소
+                        final String stNm = busStopList.get(position).stNm;
+                        busRouteList = busInfo.getBusRoute(arsId, key);
+
+                        for(int i = 0; i< busRouteList.size(); i++){
+                            busRouteList.get(i).setArsId(arsId);
+                            busRouteList.get(i).setStNm(stNm);
+                            String busRouteNm = busRouteList.get(i).busRouteNm;
+                            String stEnd = busRouteList.get(i).stEnd;
+
+                            vehicleList.add(busRouteNm+" | "+stEnd+"방면");
+                        }
+
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                // TODO Auto-generated method stub
+                                vehicleAdapter.notifyDataSetChanged();
+                            }
+                        });
+
+                    }
+                }).start();
+
+            }
+
+        });
+
     }
 }

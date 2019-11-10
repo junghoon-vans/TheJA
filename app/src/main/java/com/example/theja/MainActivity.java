@@ -3,6 +3,7 @@ package com.example.theja;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -47,6 +48,35 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 0);
             }
         });
+
+        // 리스트뷰 삭제 이벤트
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                // TODO Auto-generated method stub
+
+                                vehicleList.remove(position);
+                                listViewAdapter.notifyDataSetChanged();
+
+                            }
+                        });
+
+                    }
+                }).start();
+
+                return true;
+            }
+        });
+
     }
 
     // 대중교통 검색 결과 리턴

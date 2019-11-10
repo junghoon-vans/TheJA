@@ -1,4 +1,4 @@
-package com.example.theja;
+package com.example.theja.main;
 
 public class ListViewItem {
 

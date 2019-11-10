@@ -1,4 +1,4 @@
-package com.example.theja;
+package com.example.theja.main;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.example.theja.R;
 
 import java.util.Vector;
 

@@ -1,4 +1,4 @@
-package com.example.theja;
+package com.example.theja.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.ListView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.theja.R;
 import com.example.theja.busInfo.BusArrival;
 import com.example.theja.busInfo.BusInfoActivity;
 import com.example.theja.busInfo.BusRoute;

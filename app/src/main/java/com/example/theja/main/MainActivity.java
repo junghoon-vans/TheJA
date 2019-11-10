@@ -20,12 +20,23 @@ import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
 
+    // 리스트뷰 관련 클래스
     private ListView listView;
     private ListViewAdapter listViewAdapter;
-    private Vector<ListViewItem> vehicleList; // 리스트뷰 리스트
+    private Vector<ListViewItem> vehicleList;
 
-    private BusArrival busArrival = new BusArrival(); // 버스 도착 정보 파싱 클래스
-    private List<String> msg; // 메시지
+    // 버스 도착 정보 파싱 클래스
+    private BusArrival busArrival = new BusArrival();
+    // 도착 정보 메시지
+    private List<String> msg;
+
+    // 대중교통 정보 저장 SharedPreperence
+    private UserData userData = new UserData();
+    // 저장된 대중교통 정보 리스트
+    private List<Vehicle> vehicleList = new ArrayList<>();
+    private ArrayList<String> searchIdList = new ArrayList<>();
+    private ArrayList<String> stationList = new ArrayList<>();
+    private ArrayList<String> routeList = new ArrayList<>();
 
     String key = "b6uH6X9Fql01CqlgeuVFN%2F8uAMSf061dkr86yJPO6BYMgFHAMoi9ZgK30BGNdSYywuZLyOnwjL9%2FtvT9iapVWQ%3D%3D"; // busInfo api key
 

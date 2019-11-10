@@ -56,6 +56,52 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(listViewAdapter);
         listViewItems = listViewAdapter.listViewItemList;
 
+        // 저장된 정보 불러오기
+        searchIdList = userData.getStringArrayPref(context, "arsId");
+        stationList = userData.getStringArrayPref(context, "stNm");
+        routeList = userData.getStringArrayPref(context, "routeNm");
+
+        for(int i=0; i<searchIdList.size(); i++){ // vehicleList 복구
+            int arsId = Integer.parseInt(searchIdList.get(i));
+            String stNm = stationList.get(i);
+            String routeNm = routeList.get(i);
+
+            Vehicle vehicle = new Vehicle(arsId, stNm, routeNm);
+            vehicleList.add(vehicle);
+        }
+
+        new Thread(new Runnable() { // index size == 0 에러 수정
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+
+                for(int i=0; i<vehicleList.size(); i++){
+                    int arsId = vehicleList.get(i).getSearchId();
+                    String routeNm = vehicleList.get(i).getRoute();
+                    String stNm = vehicleList.get(i).getStation();
+
+                    msg = busArrival.getBusArrival(arsId, routeNm, key);
+                    if(msg.size()!=0){
+                        listViewAdapter.addItem(routeNm, stNm, msg.get(0), msg.get(1));
+                    }else{
+                        listViewAdapter.addItem(routeNm, stNm, "통신에러", "통신에러");
+                    }
+                }
+
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+
+                        listViewAdapter.notifyDataSetChanged();
+
+                    }
+                });
+
+            }
+        }).start();
+
         // 대중교통 추가 버튼
         Button addBus = (Button) findViewById(R.id.addVehicle);
         addBus.setOnClickListener(new View.OnClickListener() {

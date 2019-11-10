@@ -121,6 +121,31 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         // TODO Auto-generated method stub
 
+                        vehicleList.remove(position);
+                        searchIdList.clear();
+                        stationList.clear();
+                        routeList.clear();
+
+                        // 리스트 나눠서 저장 (arsId, stNm, routeNm)
+                        for(int i=0; i<vehicleList.size(); i++){
+                            searchIdList.add(Integer.toString(vehicleList.get(i).getSearchId()));
+                            stationList.add(vehicleList.get(i).getStation());
+                            routeList.add(vehicleList.get(i).getRoute());
+                        }
+
+                        // 마지막 리스트를 삭제할 경우
+                        if(vehicleList.size()==0){
+                            userData.removeStringArrayPref(context, "arsId");
+                            userData.removeStringArrayPref(context, "stNm");
+                            userData.removeStringArrayPref(context, "routeNm");
+
+                        }else{
+                            userData.setStringArrayPref(context,"arsId", searchIdList);
+                            userData.setStringArrayPref(context,"stNm", stationList);
+                            userData.setStringArrayPref(context,"routeNm", routeList);
+                        }
+
+
                         runOnUiThread(new Runnable() {
 
                             @Override

@@ -112,6 +112,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 리스트뷰 동기화 이벤트
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+
+                        int arsId = vehicleList.get(position).getSearchId();
+                        String routeNm = vehicleList.get(position).getRoute();
+                        msg = busArrival.getBusArrival(arsId, routeNm, key);
+
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                // TODO Auto-generated method stub
+                                if(msg.size()!=0) {
+                                    listViewAdapter.update(position, msg.get(0), msg.get(1));
+                                    listViewAdapter.notifyDataSetChanged();
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "네트워크상에 문제가 있습니다, 잠시후 다시 시도하세요", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+
+                    }
+                }).start();
+            }
+        });
+
         // 리스트뷰 삭제 이벤트
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override

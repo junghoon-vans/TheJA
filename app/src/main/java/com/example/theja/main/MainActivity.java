@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -49,6 +50,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // 대기정보 조회
+        final ImageView mask = (ImageView) findViewById(R.id.mask);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+
+                DustInfo dustInfo = new DustInfo();
+                final boolean isDust = dustInfo.getDustInfo();
+
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        if (isDust) {
+                            mask.setImageResource(R.drawable.mask);
+                        } else {
+                            mask.setImageResource(R.drawable.maskx);
+                        }
+                    }
+                });
+
+            }
+        }).start();
 
         // 대중교통 리스트뷰
         listView = (ListView) findViewById(R.id.listView);
@@ -143,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
                 }).start();
             }
         });
-
         // 리스트뷰 삭제 이벤트
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override

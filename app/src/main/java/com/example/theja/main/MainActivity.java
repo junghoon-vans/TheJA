@@ -3,11 +3,13 @@ package com.example.theja.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> stationList = new ArrayList<>();
     private ArrayList<String> routeList = new ArrayList<>();
 
+    List<String> weather;
+
     Context context = MainActivity.this;
     String key = "b6uH6X9Fql01CqlgeuVFN%2F8uAMSf061dkr86yJPO6BYMgFHAMoi9ZgK30BGNdSYywuZLyOnwjL9%2FtvT9iapVWQ%3D%3D"; // busInfo api key
 
@@ -60,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
                 DustInfo dustInfo = new DustInfo();
                 final boolean isDust = dustInfo.getDustInfo();
-
                 runOnUiThread(new Runnable() {
 
                     @Override
@@ -71,6 +74,30 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             mask.setImageResource(R.drawable.maskx);
                         }
+                    }
+                });
+
+            }
+        }).start();
+
+        // 기상정보 조회
+        final ImageView umbrella = (ImageView) findViewById(R.id.umbrella);
+        final TextView tempMax = (TextView) findViewById(R.id.tempMax);
+        final TextView tempMin = (TextView) findViewById(R.id.tempMin);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+
+                WeatherInfo weatherInfo = new WeatherInfo();
+                weather = weatherInfo.getWeatherInfo();
+
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
                     }
                 });
 

@@ -2,12 +2,11 @@ package com.example.theja.main;
 
 import android.util.Log;
 
-import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,8 @@ public class WeatherInfo {
             InputStream input = url.openStream();
 
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            XmlPullParser xpp = factory.newPullParser();
+            XmlPullParser xpp;
+            xpp = factory.newPullParser();
             xpp.setInput(new InputStreamReader(input, "UTF-8")); //inputstream 으로부터 xml 입력받기
 
             String tag, text;

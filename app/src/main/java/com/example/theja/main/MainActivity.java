@@ -2,8 +2,8 @@ package com.example.theja.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -56,7 +56,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //툴바 설정
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.parseColor("#ffff33"));
+        toolbar.setSubtitle("좀만 더자고 학교가자");
+        toolbar.setNavigationIcon(R.mipmap.ic_launcher_foreground_theja); //제목앞에 아이콘 넣기
         setSupportActionBar(toolbar) ;
 
         // 대기정보 조회

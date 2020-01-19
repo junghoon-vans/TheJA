@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //툴바 설정
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(Color.parseColor("#ffff33"));
-        toolbar.setSubtitle("좀만 더자고 학교가자");
-        toolbar.setNavigationIcon(R.mipmap.ic_launcher_foreground_theja); //제목앞에 아이콘 넣기
-        setSupportActionBar(toolbar) ;
+        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
+        toolBar.setTitleTextColor(Color.parseColor("#ffff33"));
+        toolBar.setSubtitle("좀만 더자고 학교가자");
+        toolBar.setNavigationIcon(R.mipmap.ic_launcher_foreground_theja); //제목앞에 아이콘 넣기
+        setSupportActionBar(toolBar);
 
         // 대기정보 조회
         final ImageView mask = (ImageView) findViewById(R.id.mask);

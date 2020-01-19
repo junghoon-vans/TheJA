@@ -1,77 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".busInfo.BusInfoActivity"
-    android:orientation="vertical">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"/>
-
-    <DigitalClock
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="50dp"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        // 우산
-        <ImageView
-            android:id="@+id/umbrella"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:src="@drawable/umbrellax"/>
-
-        // 최고기온 최저기온
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/tempMax"
-                android:layout_width="30dp"
-                android:layout_height="15dp"
-                android:text="0℃"/>
-            <TextView
-                android:id="@+id/tempMin"
-                android:layout_width="30dp"
-                android:layout_height="15dp"
-                android:text="0℃"/>
-        </LinearLayout>
-
-        // 미세먼지
-        <ImageView
-            android:id="@+id/mask"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:src="@drawable/maskx"/>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/addVehicle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/add_vehicle" />
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
-
-</LinearLayout>
+<?xml version="1.0" encoding="utf-8"?><androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto"    xmlns:tools="http://schemas.android.com/tools"    android:layout_width="match_parent"    android:layout_height="match_parent"    tools:context=".MainActivity">    <com.google.android.material.appbar.AppBarLayout        android:layout_width="match_parent"        android:layout_height="wrap_content"        android:theme="@style/AppTheme.AppBarOverlay">        <androidx.appcompat.widget.Toolbar            android:id="@+id/toolbar"            android:layout_width="match_parent"            android:layout_height="?attr/actionBarSize"            android:background="?attr/colorPrimary"            app:popupTheme="@style/AppTheme.PopupOverlay" />    </com.google.android.material.appbar.AppBarLayout>    <include layout="@layout/content_main" />    <com.google.android.material.floatingactionbutton.FloatingActionButton        android:id="@+id/fab"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        android:layout_gravity="bottom|end"        android:layout_margin="@dimen/fab_margin"        app:srcCompat="@android:drawable/ic_dialog_email" /></androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">TheJA</string>
-    <string name="add_vehicle">대중교통 추가</string>
     <string name="explain_bus">버스정류소 번호를 확인하세요!</string>
 </resources>

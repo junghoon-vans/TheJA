@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,12 +23,18 @@ import com.example.theja.UserData;
 import com.example.theja.busInfo.BusArrival;
 import com.example.theja.busInfo.BusInfoActivity;
 import com.example.theja.busInfo.BusRoute;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    // FloatingActionButton
+    private FloatingActionButton fab_main, fab_sub1, fab_sub2;
+    private Animation fab_open, fab_close;
+    private boolean isFabOpen = false;
 
     // 리스트뷰 관련 클래스
     private ListView listView;
@@ -40,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     // 대중교통 정보 저장 SharedPreperence
     private UserData userData = new UserData();
+
     // 저장된 대중교통 정보 리스트
     private List<Vehicle> vehicleList = new ArrayList<>();
     private ArrayList<String> searchIdList = new ArrayList<>();
@@ -55,6 +64,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // fab 설정
+        fab_open = AnimationUtils.loadAnimation(context, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(context, R.anim.fab_close);
+
+        fab_main = (FloatingActionButton) findViewById(R.id.fab_main);
+        fab_sub1 = (FloatingActionButton) findViewById(R.id.fab_sub1);
+        fab_sub2 = (FloatingActionButton) findViewById(R.id.fab_sub2);
+
+        fab_main.setOnClickListener(this);
+        fab_sub1.setOnClickListener(this);
+        fab_sub2.setOnClickListener(this);
 
         //툴바 설정
         Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
@@ -163,16 +184,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }).start();
-
-        // 대중교통 추가 버튼
-        Button addBus = (Button) findViewById(R.id.addVehicle);
-        addBus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BusInfoActivity.class);
-                startActivityForResult(intent, 0);
-            }
-        });
 
         // 리스트뷰 동기화 이벤트
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -315,6 +326,46 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }).start();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_main:
+                toggleFab();
+                break;
+
+            case R.id.fab_sub1:
+                toggleFab();
+                Intent intent = new Intent(getApplicationContext(), BusInfoActivity.class);
+                startActivityForResult(intent, 0);
+                break;
+
+            case R.id.fab_sub2:
+                toggleFab();
+                Toast.makeText(this, "지하철 추가 기능은 아직 준비중입니다 :)", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+    }
+
+    private void toggleFab() {
+        if (isFabOpen) {
+            fab_main.setImageResource(R.drawable.ic_add);
+            fab_sub1.startAnimation(fab_close);
+            fab_sub2.startAnimation(fab_close);
+            fab_sub1.setClickable(false);
+            fab_sub2.setClickable(false);
+            isFabOpen = false;
+        } else {
+            fab_main.setImageResource(R.drawable.ic_close);
+            fab_sub1.startAnimation(fab_open);
+            fab_sub2.startAnimation(fab_open);
+            fab_sub1.setClickable(true);
+            fab_sub2.setClickable(true);
+            isFabOpen = true;
+        }
+
     }
 
 }

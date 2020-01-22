@@ -16,6 +16,7 @@
         android:layout_marginRight="8dp"
         android:backgroundTint="#ffffff"
         android:src="@drawable/ic_bus"
+        android:visibility="invisible"
         app:borderWidth="0dp"
         app:fabSize="mini" />
 
@@ -29,6 +30,7 @@
         android:layout_marginRight="8dp"
         android:backgroundTint="#ffffff"
         android:src="@drawable/ic_train"
+        android:visibility="invisible"
         app:borderWidth="0dp"
         app:fabSize="mini" />
 

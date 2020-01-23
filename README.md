@@ -8,6 +8,8 @@ Project in Myongji University major course (Mobile Computing).
 
 [Source Code Directory](/app/src/main/java/com/example/theja)
 
+[Release App v1.0](https://github.com/Jeonghun-Ban/TheJA/releases/tag/v1.0)
+
 Package
 ---
 

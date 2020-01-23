@@ -1,4 +1,4 @@
-package com.example.theja.main;
+package com.example.theja.forecastInfo;
 
 import android.util.Log;
 

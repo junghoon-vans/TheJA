@@ -1,8 +1,13 @@
 package com.example.theja.main;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -13,9 +18,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.theja.R;
 import com.example.theja.UserData;
@@ -23,6 +31,7 @@ import com.example.theja.busInfo.BusArrival;
 import com.example.theja.busInfo.BusInfoActivity;
 import com.example.theja.busInfo.BusRoute;
 import com.example.theja.forecastInfo.DustInfo;
+import com.example.theja.forecastInfo.LocationInfo;
 import com.example.theja.forecastInfo.WeatherInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -56,9 +65,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> stationList = new ArrayList<>();
     private ArrayList<String> routeList = new ArrayList<>();
 
+    // GPS 위치정보 획득
+    private LocationInfo locationInfo;
+    private static final int GPS_ENABLE_REQUEST_CODE = 2001;
+    private static final int PERMISSIONS_REQUEST_CODE = 100;
+    private double lat = 0;
+    private double lon = 0;
+
+    String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
     List<String> weather;
 
-    Context context = MainActivity.this;
+    Context context = MainActivity.this ;
     String key = "b6uH6X9Fql01CqlgeuVFN%2F8uAMSf061dkr86yJPO6BYMgFHAMoi9ZgK30BGNdSYywuZLyOnwjL9%2FtvT9iapVWQ%3D%3D"; // busInfo api key
 
     @Override
@@ -84,6 +102,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolBar.setSubtitle("좀만 더자고 학교가자");
         toolBar.setNavigationIcon(R.mipmap.ic_launcher_foreground_theja); //제목앞에 아이콘 넣기
         setSupportActionBar(toolBar);
+
+        // 위치정보 조회
+        if (checkLocationServices()) {
+            checkPermission();
+        }
+
+        locationInfo = new LocationInfo(context);
+        lat = locationInfo.getLatitude();
+        lon = locationInfo.getLongitude();
+        Toast.makeText(context, "현재위치 \n위도 " + lat + "\n경도 " + lon, Toast.LENGTH_LONG).show();
 
         // 대기정보 조회
         final ImageView mask = (ImageView) findViewById(R.id.mask);
@@ -217,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).start();
             }
         });
+
         // 리스트뷰 삭제 이벤트
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -350,6 +379,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grandResults) {
+
+        if (permsRequestCode == PERMISSIONS_REQUEST_CODE && grandResults.length == REQUIRED_PERMISSIONS.length) {
+            boolean check_result = true;
+
+            for (int result : grandResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    check_result = false;
+                    break;
+                }
+            }
+            if ( check_result ) {
+                ;
+            }
+            else {
+                // 퍼미션이 거부된 경우
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])
+                        || ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[1])) {
+                    Toast.makeText(context, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요.", Toast.LENGTH_LONG).show();
+                    finish();
+                }else {
+                    Toast.makeText(context, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ", Toast.LENGTH_LONG).show();
+                }
+            }
+
+        }
+    }
+
+    void checkPermission(){
+        int hasFineLocationPermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
+            ;
+        } else {
+            // 이전에 퍼미션 거부를 한 경우
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
+                Toast.makeText(context, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
+                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
+            } else {
+                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
+            }
+        }
+    }
+
+    public boolean checkLocationServices() {
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
     private void toggleFab() {
         if (isFabOpen) {
             fab_main.setImageResource(R.drawable.ic_add);
@@ -366,7 +452,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fab_sub2.setClickable(true);
             isFabOpen = true;
         }
-
     }
 
 }

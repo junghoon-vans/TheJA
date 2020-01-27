@@ -416,11 +416,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_COARSE_LOCATION);
 
-        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
-            ;
-        } else {
-            // 이전에 퍼미션 거부를 한 경우
+        if (hasFineLocationPermission != PackageManager.PERMISSION_GRANTED ||
+                hasCoarseLocationPermission != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
                 Toast.makeText(context, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
                 ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);

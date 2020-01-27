@@ -30,36 +30,28 @@ public class LocationInfo extends Service implements LocationListener {
     public void getLocation() {
 
         try{
-            locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
 
+            locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-            if (!isGPSEnabled && !isNetworkEnabled) {
-                //
-            } else {
-
-                if (isNetworkEnabled) {
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    if (locationManager != null) {
-                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        lat = location.getLatitude();
-                        lon = location.getLongitude();
-                    }
+            if (isNetworkEnabled) {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                if (locationManager != null) {
+                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    lat = location.getLatitude();
+                    lon = location.getLongitude();
                 }
-
-                // 네트워크로 location을 받아오지 못한 경우
-                if (isGPSEnabled && location == null) {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    if (locationManager != null) {
-                        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        lat = location.getLatitude();
-                        lon = location.getLongitude();
-                    }
+            } else if (isGPSEnabled && location == null) { // 네트워크로 location을 받아오지 못한 경우
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                if (locationManager != null) {
+                    location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    lat = location.getLatitude();
+                    lon = location.getLongitude();
                 }
-
 
             }
+
         }
         catch (Exception e) {
             Log.d("@@@", e.toString());

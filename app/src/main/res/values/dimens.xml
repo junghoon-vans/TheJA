@@ -1,5 +1,6 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="fab_margin">20dp</dimen>
-    <dimen name="sub_fab_margin">15dp</dimen>
+    <dimen name="sub_fab_margin_right">28dp</dimen>
+    <dimen name="sub_fab_margin_bottom">15dp</dimen>
 </resources>

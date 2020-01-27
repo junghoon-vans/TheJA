@@ -433,6 +433,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
+    private void getWeatherData( double lat, double lon ){
+        String url = "http://api.openweathermap.org/data/2.5/weather?lat="+ lat + "&lon=" + lon +"&units=metric&appid="
+                +"a0a3c6718f3ffee22f64c850d5662a7f";
+
+        WeatherInfo weatherInfo = new WeatherInfo();
+    }
+
     private void toggleFab() {
         if (isFabOpen) {
             fab_main.setImageResource(R.drawable.ic_add);

@@ -154,6 +154,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // TODO Auto-generated method stub
                         tempMin.setText(weatherInfo.getTempMin());
                         tempMax.setText(weatherInfo.getTempMax());
+
+                        if(weatherInfo.getUmbrella()){
+                            umbrella.setImageResource(R.drawable.umbrella);
+                        } else {
+                            umbrella.setImageResource(R.drawable.umbrellax);
+                        }
                     }
                 });
 

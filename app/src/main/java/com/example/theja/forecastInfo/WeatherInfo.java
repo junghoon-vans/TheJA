@@ -1,87 +1,94 @@
 package com.example.theja.forecastInfo;
 
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WeatherInfo {
-    boolean condition = false;
-    String umbrella = "false";
-    boolean tmx = false; // temp max
-    String tempMax = "-100";
-    boolean tmn = false;  // temp min
-    String tempMin = "100";
-    boolean day = false;
-    boolean found = false;
-    boolean loop = true;
 
-    public List<String> getWeatherInfo() {
+    private boolean umbrella = false;
+    private String tempMax = "0";
+    private String tempMin = "0";
 
-        String queryUrl = "http://api.openweathermap.org/data/2.5/weather?lat=37.5805607&lon=126.923924&units=metric&appid=a0a3c6718f3ffee22f64c850d5662a7f&mode=xml"; // 기상청 조회
-        List<String> weather = new ArrayList<>();
+    private String url;
+    public List<String> weather;
 
+    public WeatherInfo(String url){
+        this.url = url;
+        weather = new ArrayList<>();
+        JSONObject jObject = getJSON();
+        getWeather(jObject);
+
+    }
+
+    private JSONObject getJSON(){
         try {
-            URL url = new URL(queryUrl); //검색 url
-            InputStream input = url.openStream();
+            HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+            conn.setConnectTimeout(10000);
+            conn.setReadTimeout(10000);
+            conn.connect();
 
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            XmlPullParser xpp;
-            xpp = factory.newPullParser();
-            xpp.setInput(new InputStreamReader(input, "UTF-8")); //inputstream 으로부터 xml 입력받기
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                InputStream is = conn.getInputStream();
+                InputStreamReader reader = new InputStreamReader(is);
+                BufferedReader in = new BufferedReader(reader);
 
-            String tag, text;
-
-            xpp.next();
-            int eventType = xpp.getEventType();
-
-            while (eventType != XmlPullParser.END_DOCUMENT&&loop) {
-
-                switch (eventType) {
-                    case XmlPullParser.START_DOCUMENT:
-                        break;
-                    case XmlPullParser.START_TAG:
-                        tag = xpp.getName();
-
-                        if (tag.equals("temperature")) {
-                            condition = true;
-                        } else if (tag.equals("max")) {
-                            tmx = true;
-                        }
-                        break;
-                    case XmlPullParser.TEXT:
-                        text = xpp.getText();
-                        if (condition) {
-                            if (text.contains("rain")) { // 기상예보에 비가 있을 경우 umbrella = "true"
-                                umbrella = "true";
-                            }
-                            condition = false;
-                        } else if (tmx) {
-
-                        } else if (tmn) {
-
-                        }
-                        break;
-                    case XmlPullParser.END_TAG:
-                        break;
+                String readed;
+                while ((readed = in.readLine()) != null) {
+                    JSONObject jObject = new JSONObject(readed);
+                    return jObject;
                 }
-                eventType = xpp.next();
+            } else {
+                return null;
             }
-
+            return null;
         } catch (Exception e) {
-            Log.e("에러", e.toString());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void getWeather(JSONObject result){
+
+        if( result != null ){
+
+            try {
+                tempMin = result.getJSONObject("main").getString("temp_min")+"℃";
+                tempMax = result.getJSONObject("main").getString("temp_max")+"℃";
+
+                if(result.getJSONArray("weather").getJSONObject(0).getString("main").equals("Rain")){
+                    umbrella = true;
+                }
+
+            }
+            catch (JSONException e ) {
+                e.printStackTrace();
+            }
         }
 
-        weather.add(umbrella);
-        weather.add(tempMax.replace(".0", "℃")); // 소수점 삭제
-        weather.add(tempMin.replace(".0", "℃"));
-        return weather;
+    }
+
+    public String getTempMin(){
+        return tempMin;
+    }
+
+    public String getTempMax(){
+        return tempMax;
+    }
+
+    public boolean getUmbrella(){
+        return umbrella;
     }
 
 }

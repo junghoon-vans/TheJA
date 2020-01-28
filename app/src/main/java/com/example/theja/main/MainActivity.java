@@ -1,14 +1,13 @@
 package com.example.theja.main;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -73,8 +72,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private double lon = 0;
 
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-
-    List<String> weather;
 
     Context context = MainActivity.this ;
     String key = "b6uH6X9Fql01CqlgeuVFN%2F8uAMSf061dkr86yJPO6BYMgFHAMoi9ZgK30BGNdSYywuZLyOnwjL9%2FtvT9iapVWQ%3D%3D"; // busInfo api key
@@ -147,15 +144,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-
-                WeatherInfo weatherInfo = new WeatherInfo();
-                weather = weatherInfo.getWeatherInfo();
-
+                String url = "http://api.openweathermap.org/data/2.5/weather?lat="+ lat + "&lon=" + lon +"&units=metric&appid="
+                        +"a0a3c6718f3ffee22f64c850d5662a7f";
+               final WeatherInfo weatherInfo = new WeatherInfo(url);
                 runOnUiThread(new Runnable() {
 
                     @Override
                     public void run() {
                         // TODO Auto-generated method stub
+                        tempMin.setText(weatherInfo.getTempMin());
+                        tempMax.setText(weatherInfo.getTempMax());
                     }
                 });
 
@@ -431,13 +429,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    }
-
-    private void getWeatherData( double lat, double lon ){
-        String url = "http://api.openweathermap.org/data/2.5/weather?lat="+ lat + "&lon=" + lon +"&units=metric&appid="
-                +"a0a3c6718f3ffee22f64c850d5662a7f";
-
-        WeatherInfo weatherInfo = new WeatherInfo();
     }
 
     private void toggleFab() {

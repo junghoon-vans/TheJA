@@ -11,12 +11,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class GeopositionFInder {
+public class GeopositionFinder {
 
     String url = "https://dataservice.accuweather.com" + "/locations/v1/cities/geoposition/search?";
     String locationID, locationName;
 
-    public GeopositionFInder(double lat, double lon, String apiKey){
+    public GeopositionFinder(double lat, double lon, String apiKey){
         url = url + "apikey=" + apiKey + "&q=" + lat + "," + lon + "&language=ko-kr";
         JSONObject jObject = getJSON();
         getLocation(jObject);
@@ -56,7 +56,7 @@ public class GeopositionFInder {
             try {
                 locationID = result.getString("Key");
                 locationName = result.getJSONObject("AdministrativeArea").getString("LocalizedName").substring(0,2);
-                Log.i("@@@", locationID);
+
 
             }
             catch (JSONException e ) {

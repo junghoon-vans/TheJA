@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -29,6 +30,7 @@ import com.example.theja.busInfo.BusArrival;
 import com.example.theja.busInfo.BusInfoActivity;
 import com.example.theja.busInfo.BusRoute;
 import com.example.theja.forecastInfo.DustInfo;
+import com.example.theja.forecastInfo.GeopositionFinder;
 import com.example.theja.forecastInfo.LocationFinder;
 import com.example.theja.forecastInfo.WeatherInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,8 +38,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-
-import com.example.theja.forecastInfo.GeopositionFInder;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LocationFinder locationFinder;
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
-    double lat, lon;
+    private String locationID, locationName;
 
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
@@ -109,27 +109,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         locationFinder = new LocationFinder(context); // 위경도 찾기
-        lat = locationFinder.getLatitude();
-        lon = locationFinder.getLongitude();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-
-                final GeopositionFInder geopositionFinder = new GeopositionFInder(lat, lon, weatherApiKey); // 도시 정보 찾기
-
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        // TODO Auto-generated method stub
-
-                        Toast.makeText(context, geopositionFinder.getLocationName(), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        }).start();
 
         // 기상정보 조회
         final ImageView umbrella = (ImageView) findViewById(R.id.umbrella);
@@ -140,9 +119,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                String url = "http://api.openweathermap.org/data/2.5/weather?lat="+ lat + "&lon=" + lon +"&units=metric&appid="
-                        +"8fff0fdc43fedd51e4f8b475800a1158";
-                final WeatherInfo weatherInfo = new WeatherInfo(url);
+                final GeopositionFinder geopositionFinder = new GeopositionFinder(locationFinder.getLatitude(), locationFinder.getLongitude(), weatherApiKey); // 도시 정보 찾기
+                locationID = geopositionFinder.getLocationID();
+                locationName = geopositionFinder.getLocationName();
+
+                final WeatherInfo weatherInfo = new WeatherInfo(locationID, weatherApiKey);
+
                 runOnUiThread(new Runnable() {
 
                     @Override

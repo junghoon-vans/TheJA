@@ -17,10 +17,11 @@ public class WeatherInfo {
     private String tempMax = "0";
     private String tempMin = "0";
 
-    private String url;
+    private String url = "http://dataservice.accuweather.com" + "/forecasts/v1/daily/1day/";
 
-    public WeatherInfo(String url){
-        this.url = url;
+    public WeatherInfo(String locationID, String apiKey){
+        url = url + locationID + "?apikey=" + apiKey + "&metric=true";
+        Log.i("@@@", url);
         JSONObject jObject = getJSON();
         getWeather(jObject);
 
@@ -41,7 +42,7 @@ public class WeatherInfo {
                 String readed;
                 while ((readed = in.readLine()) != null) {
                     JSONObject jObject = new JSONObject(readed);
-                    return jObject;
+                    return jObject.getJSONObject("DailyForecasts");
                 }
             } else {
                 return null;
@@ -58,10 +59,11 @@ public class WeatherInfo {
         if( result != null ){
 
             try {
-                tempMin = result.getJSONObject("main").getString("temp_min")+"℃";
-                tempMax = result.getJSONObject("main").getString("temp_max")+"℃";
+                JSONObject temp = result.getJSONObject("Temperature");
+                tempMin = temp.getJSONObject("Minimum").getString("Value")+"℃";
+                tempMax = temp.getJSONObject("Maximum").getString("Value")+"℃";
 
-                if(result.getJSONArray("weather").getJSONObject(0).getString("main").equals("Rain")){
+                if(result.getJSONObject("Day").getString("IconPhrase").contains("Rain")){
                     umbrella = true;
                 }
 

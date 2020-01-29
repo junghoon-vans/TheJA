@@ -1,18 +1,23 @@
 TheJA
 ===
+
+Project in Myongji University major course (Mobile Computing).
+
 ![version](https://img.shields.io/badge/Version-1.6.0-green.svg)
 ![language](https://img.shields.io/badge/Language-Java-Orange.svg)
 ![android](https://img.shields.io/badge/android-10(api_level_29)-Blue.svg)
 
-Project in Myongji University major course (Mobile Computing).
-
-명지대학교 전공수업(모바일 컴퓨팅)에서 진행한 개인 프로젝트로 **명지대학교 융합소프트웨어학부 제 2회 공모전**에서 우수상 수상하였습니다.
-
-![수상사진](수상사진.jpg)
-
 :open_book: Introduction
 ---
 아침에 바쁜 대학생들에게 필요한 정보만을 빠르게 제공하는 애플리케이션입니다. 챙겨야 하는 물건(우산이나 미세먼지 마스크)을 아이콘으로 쉽게 파악할 수 있도록 하였으며 최저온도, 최고온도도 표기하여 날씨에 맞는 옷을 입을 수 있도록 하였습니다. 또한 자주 사용하는 대중교통을 메인 화면에 등록하여 언제 버스나 지하철이 정류장(혹은 역)에 도착하는 지 확인할 수 있는 기능도 제공합니다.
+
+:scroll: History
+---
+
+- 2019년 1학기: 명지대학교 전공수업(모바일 컴퓨팅) 개인 프로젝트로 개발 시작
+- 2019년 11월:  *명지대학교 융합소프트웨어학부 제 2회 공모전* 에서 **우수상 수상**
+
+![수상사진](수상사진.jpg)
 
 :writing_hand: Release Note
 ---

@@ -11,19 +11,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class WeatherInfo {
+public class GeopositionFInder {
 
-    private boolean umbrella = false;
-    private String tempMax = "0";
-    private String tempMin = "0";
+    String url = "https://dataservice.accuweather.com" + "/locations/v1/cities/geoposition/search?";
+    String locationID, locationName;
 
-    private String url;
-
-    public WeatherInfo(String url){
-        this.url = url;
+    public GeopositionFInder(double lat, double lon, String apiKey){
+        url = url + "apikey=" + apiKey + "&q=" + lat + "," + lon + "&language=ko-kr";
         JSONObject jObject = getJSON();
-        getWeather(jObject);
-
+        getLocation(jObject);
     }
 
     private JSONObject getJSON(){
@@ -53,17 +49,14 @@ public class WeatherInfo {
         return null;
     }
 
-    private void getWeather(JSONObject result){
+    private void getLocation(JSONObject result){
 
         if( result != null ){
 
             try {
-                tempMin = result.getJSONObject("main").getString("temp_min")+"℃";
-                tempMax = result.getJSONObject("main").getString("temp_max")+"℃";
-
-                if(result.getJSONArray("weather").getJSONObject(0).getString("main").equals("Rain")){
-                    umbrella = true;
-                }
+                locationID = result.getString("Key");
+                locationName = result.getJSONObject("AdministrativeArea").getString("LocalizedName").substring(0,2);
+                Log.i("@@@", locationID);
 
             }
             catch (JSONException e ) {
@@ -73,16 +66,12 @@ public class WeatherInfo {
 
     }
 
-    public String getTempMin(){
-        return tempMin;
+    public String getLocationID(){
+        return locationID;
     }
 
-    public String getTempMax(){
-        return tempMax;
-    }
-
-    public boolean getUmbrella(){
-        return umbrella;
+    public String getLocationName(){
+        return locationName;
     }
 
 }

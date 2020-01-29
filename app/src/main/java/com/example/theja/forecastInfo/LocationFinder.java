@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-public class LocationInfo extends Service implements LocationListener {
+public class LocationFinder extends Service implements LocationListener {
 
     private final Context context;
     private Location location = null;
@@ -22,7 +22,7 @@ public class LocationInfo extends Service implements LocationListener {
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
     protected LocationManager locationManager;
 
-    public LocationInfo(Context context) {
+    public LocationFinder(Context context) {
         this.context = context;
         getLocation();
     }

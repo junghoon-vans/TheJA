@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -30,13 +29,15 @@ import com.example.theja.busInfo.BusArrival;
 import com.example.theja.busInfo.BusInfoActivity;
 import com.example.theja.busInfo.BusRoute;
 import com.example.theja.forecastInfo.DustInfo;
-import com.example.theja.forecastInfo.LocationInfo;
+import com.example.theja.forecastInfo.LocationFinder;
 import com.example.theja.forecastInfo.WeatherInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import com.example.theja.forecastInfo.GeopositionFInder;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -65,16 +66,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> routeList = new ArrayList<>();
 
     // GPS 위치정보 획득
-    private LocationInfo locationInfo;
+    private LocationFinder locationFinder;
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
-    private double lat = 0;
-    private double lon = 0;
+    double lat, lon;
 
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
     Context context = MainActivity.this ;
-    String key = "b6uH6X9Fql01CqlgeuVFN%2F8uAMSf061dkr86yJPO6BYMgFHAMoi9ZgK30BGNdSYywuZLyOnwjL9%2FtvT9iapVWQ%3D%3D"; // busInfo api key
+
+    // API Keys
+    String busApiKey = "b6uH6X9Fql01CqlgeuVFN%2F8uAMSf061dkr86yJPO6BYMgFHAMoi9ZgK30BGNdSYywuZLyOnwjL9%2FtvT9iapVWQ%3D%3D";
+    String weatherApiKey = "1Pqm2QTnKfO0ik4yVJahaIO7ljt3OdCA";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +108,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             checkPermission();
         }
 
-        locationInfo = new LocationInfo(context);
-        lat = locationInfo.getLatitude();
-        lon = locationInfo.getLongitude();
-        Toast.makeText(context, "현재위치 \n위도 " + lat + "\n경도 " + lon, Toast.LENGTH_LONG).show();
+        locationFinder = new LocationFinder(context); // 위경도 찾기
+        lat = locationFinder.getLatitude();
+        lon = locationFinder.getLongitude();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+
+                final GeopositionFInder geopositionFinder = new GeopositionFInder(lat, lon, weatherApiKey); // 도시 정보 찾기
+
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+
+                        Toast.makeText(context, geopositionFinder.getLocationName(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }).start();
+
+        // 기상정보 조회
+        final ImageView umbrella = (ImageView) findViewById(R.id.umbrella);
+        final TextView tempMax = (TextView) findViewById(R.id.tempMax);
+        final TextView tempMin = (TextView) findViewById(R.id.tempMin);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                String url = "http://api.openweathermap.org/data/2.5/weather?lat="+ lat + "&lon=" + lon +"&units=metric&appid="
+                        +"8fff0fdc43fedd51e4f8b475800a1158";
+                final WeatherInfo weatherInfo = new WeatherInfo(url);
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        tempMin.setText(weatherInfo.getTempMin());
+                        tempMax.setText(weatherInfo.getTempMax());
+
+                        if(weatherInfo.getUmbrella()){
+                            umbrella.setImageResource(R.drawable.umbrella);
+                        } else {
+                            umbrella.setImageResource(R.drawable.umbrellax);
+                        }
+                    }
+                });
+
+            }
+        }).start();
 
         // 대기정보 조회
         final ImageView mask = (ImageView) findViewById(R.id.mask);
@@ -128,37 +180,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             mask.setImageResource(R.drawable.mask);
                         } else {
                             mask.setImageResource(R.drawable.maskx);
-                        }
-                    }
-                });
-
-            }
-        }).start();
-
-        // 기상정보 조회
-        final ImageView umbrella = (ImageView) findViewById(R.id.umbrella);
-        final TextView tempMax = (TextView) findViewById(R.id.tempMax);
-        final TextView tempMin = (TextView) findViewById(R.id.tempMin);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                String url = "http://api.openweathermap.org/data/2.5/weather?lat="+ lat + "&lon=" + lon +"&units=metric&appid="
-                        +"8fff0fdc43fedd51e4f8b475800a1158";
-               final WeatherInfo weatherInfo = new WeatherInfo(url);
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        // TODO Auto-generated method stub
-                        tempMin.setText(weatherInfo.getTempMin());
-                        tempMax.setText(weatherInfo.getTempMax());
-
-                        if(weatherInfo.getUmbrella()){
-                            umbrella.setImageResource(R.drawable.umbrella);
-                        } else {
-                            umbrella.setImageResource(R.drawable.umbrellax);
                         }
                     }
                 });
@@ -196,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String routeNm = vehicleList.get(i).getRoute();
                     String stNm = vehicleList.get(i).getStation();
 
-                    msg = busArrival.getBusArrival(arsId, routeNm, key);
+                    msg = busArrival.getBusArrival(arsId, routeNm, busApiKey);
                     if(msg.size()!=0){
                         listViewAdapter.addItem(routeNm, stNm, msg.get(0), msg.get(1));
                     }else{
@@ -229,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         int arsId = vehicleList.get(position).getSearchId();
                         String routeNm = vehicleList.get(position).getRoute();
-                        msg = busArrival.getBusArrival(arsId, routeNm, key);
+                        msg = busArrival.getBusArrival(arsId, routeNm, busApiKey);
 
                         runOnUiThread(new Runnable() {
 
@@ -340,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 userData.setStringArrayPref(context,"stNm", stationList);
                 userData.setStringArrayPref(context,"routeNm", routeList);
 
-                msg = busArrival.getBusArrival(arsId, routeNm, key);
+                msg = busArrival.getBusArrival(arsId, routeNm, busApiKey);
 
 
                 runOnUiThread(new Runnable() {

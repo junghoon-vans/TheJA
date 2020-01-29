@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 // TODO Auto-generated method stub
                 String url = "http://api.openweathermap.org/data/2.5/weather?lat="+ lat + "&lon=" + lon +"&units=metric&appid="
-                        +"a0a3c6718f3ffee22f64c850d5662a7f";
+                        +"8fff0fdc43fedd51e4f8b475800a1158";
                final WeatherInfo weatherInfo = new WeatherInfo(url);
                 runOnUiThread(new Runnable() {
 

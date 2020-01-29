@@ -2,7 +2,7 @@ TheJA
 ===
 ![version](https://img.shields.io/badge/Version-1.6.0-green.svg)
 ![language](https://img.shields.io/badge/Language-Java-Orange.svg)
-![android](https://img.shields.io/badge/android-application-Blue.svg)
+![android](https://img.shields.io/badge/android-10(api_level_29)-Blue.svg)
 
 Project in Myongji University major course (Mobile Computing).
 
@@ -18,6 +18,13 @@ Project in Myongji University major course (Mobile Computing).
 ---
 
 - [v1.0](https://github.com/Jeonghun-Ban/TheJA/releases/tag/v1.0)
+    - 학교 전공으로 진행한 개인 프로젝트
+    - 안드로이드 9.0(Pie) 기반으로 개발
+    - 날씨 정보, 미세먼지 정보 제공
+    - 버스 도착 정보 리스트뷰
+- [v1.6](https://github.com/Jeonghun-Ban/TheJA/releases/tag/v1.6)
+    - 안드로이드 10 기반으로 재구축
+    - 위치 정보 기반 날씨 획득 기능 추가
 
 :file_folder: Source Code
 ---

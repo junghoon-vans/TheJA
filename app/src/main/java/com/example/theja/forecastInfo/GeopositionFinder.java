@@ -1,7 +1,5 @@
 package com.example.theja.forecastInfo;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,8 +54,6 @@ public class GeopositionFinder {
             try {
                 locationID = result.getString("Key");
                 locationName = result.getJSONObject("AdministrativeArea").getString("LocalizedName").substring(0,2);
-
-
             }
             catch (JSONException e ) {
                 e.printStackTrace();

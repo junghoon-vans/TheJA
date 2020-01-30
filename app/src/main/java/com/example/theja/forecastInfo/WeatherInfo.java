@@ -21,10 +21,8 @@ public class WeatherInfo {
 
     public WeatherInfo(String locationID, String apiKey){
         url = url + locationID + "?apikey=" + apiKey + "&metric=true";
-        Log.i("@@@", url);
         JSONObject jObject = getJSON();
         getWeather(jObject);
-
     }
 
     private JSONObject getJSON(){
@@ -41,8 +39,8 @@ public class WeatherInfo {
 
                 String readed;
                 while ((readed = in.readLine()) != null) {
-                    JSONObject jObject = new JSONObject(readed);
-                    return jObject.getJSONObject("DailyForecasts");
+                    JSONObject jObject = new JSONObject(readed).getJSONArray("DailyForecasts").getJSONObject(0);
+                    return jObject;
                 }
             } else {
                 return null;
@@ -55,13 +53,15 @@ public class WeatherInfo {
     }
 
     private void getWeather(JSONObject result){
-
         if( result != null ){
 
+            Log.i("@@@", "dd");
             try {
                 JSONObject temp = result.getJSONObject("Temperature");
                 tempMin = temp.getJSONObject("Minimum").getString("Value")+"℃";
                 tempMax = temp.getJSONObject("Maximum").getString("Value")+"℃";
+                Log.i("@@@", tempMin);
+                Log.i("@@@", tempMax);
 
                 if(result.getJSONObject("Day").getString("IconPhrase").contains("Rain")){
                     umbrella = true;

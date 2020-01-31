@@ -29,7 +29,6 @@ import com.example.theja.busInfo.BusArrival;
 import com.example.theja.busInfo.BusInfoActivity;
 import com.example.theja.busInfo.BusRoute;
 import com.example.theja.forecastInfo.DustInfo;
-import com.example.theja.forecastInfo.GeopositionFinder;
 import com.example.theja.forecastInfo.LocationFinder;
 import com.example.theja.forecastInfo.WeatherInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LocationFinder locationFinder;
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
-    private String locationID, locationName;
+    private double lat, lon;
 
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
@@ -109,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             checkPermission();
         }
         locationFinder = new LocationFinder(context); // 위경도 찾기
+        lat = locationFinder.getLatitude();
+        lon = locationFinder.getLongitude();
 
         // 데이터 View
         final ImageView umbrella = (ImageView) findViewById(R.id.umbrella);
@@ -120,13 +121,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                // 도시 정보 조회
-                final GeopositionFinder geopositionFinder = new GeopositionFinder(locationFinder.getLatitude(), locationFinder.getLongitude(), weatherApiKey);
-                locationID = geopositionFinder.getLocationID();
-                locationName = geopositionFinder.getLocationName();
 
                 // 기상정보 조회
-                final WeatherInfo weatherInfo = new WeatherInfo(locationID, weatherApiKey);
+                final WeatherInfo weatherInfo = new WeatherInfo(lat, lon, weatherApiKey);
 
                 // 대기정보 조회
                 DustInfo dustInfo = new DustInfo();
@@ -137,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void run() {
                         // TODO Auto-generated method stub
-                        tempMin.setText(weatherInfo.getTempMin());
-                        tempMax.setText(weatherInfo.getTempMax());
+                        tempMin.setText(weatherInfo.getTempMin()+"℃");
+                        tempMax.setText(weatherInfo.getTempMax()+"℃");
                         if(weatherInfo.getUmbrella()){
                             umbrella.setImageResource(R.drawable.umbrella);
                         } else {

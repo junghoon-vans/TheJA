@@ -12,13 +12,13 @@ import java.net.URL;
 public class WeatherInfo {
 
     private boolean umbrella = false;
-    private String tempMax = "0℃";
-    private String tempMin = "0℃";
+    private String tempMax = "0";
+    private String tempMin = "0";
 
-    private String url = "http://dataservice.accuweather.com" + "/forecasts/v1/daily/1day/";
+    private String url = "https://apis.openapi.sk.com/weather/summary";
 
-    public WeatherInfo(String locationID, String apiKey){
-        url = url + locationID + "?apikey=" + apiKey + "&metric=true";
+    public WeatherInfo(double lat, double lon, String apiKey){
+        url = url + "?appkey=" + apiKey + "&version=2&lat=" + lat + "&lon=" + lon;
         JSONObject jObject = getJSON();
         getWeather(jObject);
     }
@@ -37,7 +37,7 @@ public class WeatherInfo {
 
                 String readed;
                 while ((readed = in.readLine()) != null) {
-                    JSONObject jObject = new JSONObject(readed).getJSONArray("DailyForecasts").getJSONObject(0);
+                    JSONObject jObject = new JSONObject(readed).getJSONObject("weather").getJSONArray("summary").getJSONObject(0).getJSONObject("today");
                     return jObject;
                 }
             } else {
@@ -54,11 +54,9 @@ public class WeatherInfo {
         if( result != null ){
 
             try {
-                JSONObject temp = result.getJSONObject("Temperature");
-                tempMax = temp.getJSONObject("Maximum").getString("Value")+"℃";
-                tempMin = temp.getJSONObject("Minimum").getString("Value")+"℃";
-
-                if(result.getJSONObject("Day").getString("IconPhrase").contains("Rain")){
+                tempMax = result.getJSONObject("temperature").getString("tmax");
+                tempMin = result.getJSONObject("temperature").getString("tmin");
+                if(result.getJSONObject("sky").getString("name").contains("비")){
                     umbrella = true;
                 }
 

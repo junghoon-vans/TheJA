@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -76,13 +75,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Context context = MainActivity.this ;
 
     // API Keys
-    String busApiKey = "b6uH6X9Fql01CqlgeuVFN%2F8uAMSf061dkr86yJPO6BYMgFHAMoi9ZgK30BGNdSYywuZLyOnwjL9%2FtvT9iapVWQ%3D%3D";
-    String weatherApiKey = "1Pqm2QTnKfO0ik4yVJahaIO7ljt3OdCA";
+    String busApiKey, weatherApiKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        busApiKey = getResources().getString(R.string.busApiKey);
+        weatherApiKey = getResources().getString(R.string.weatherApiKey);
 
         // fab 설정
         fab_open = AnimationUtils.loadAnimation(context, R.anim.fab_open);
@@ -107,23 +108,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (checkLocationServices()) {
             checkPermission();
         }
-
         locationFinder = new LocationFinder(context); // 위경도 찾기
 
-        // 기상정보 조회
+        // 데이터 View
         final ImageView umbrella = (ImageView) findViewById(R.id.umbrella);
         final TextView tempMax = (TextView) findViewById(R.id.tempMax);
         final TextView tempMin = (TextView) findViewById(R.id.tempMin);
+        final ImageView mask = (ImageView) findViewById(R.id.mask);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                final GeopositionFinder geopositionFinder = new GeopositionFinder(locationFinder.getLatitude(), locationFinder.getLongitude(), weatherApiKey); // 도시 정보 찾기
+                // 도시 정보 조회
+                final GeopositionFinder geopositionFinder = new GeopositionFinder(locationFinder.getLatitude(), locationFinder.getLongitude(), weatherApiKey);
                 locationID = geopositionFinder.getLocationID();
                 locationName = geopositionFinder.getLocationName();
 
+                // 기상정보 조회
                 final WeatherInfo weatherInfo = new WeatherInfo(locationID, weatherApiKey);
+
+                // 대기정보 조회
+                DustInfo dustInfo = new DustInfo();
+                final boolean isDust = dustInfo.getDustInfo();
 
                 runOnUiThread(new Runnable() {
 
@@ -132,32 +139,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // TODO Auto-generated method stub
                         tempMin.setText(weatherInfo.getTempMin());
                         tempMax.setText(weatherInfo.getTempMax());
-
                         if(weatherInfo.getUmbrella()){
                             umbrella.setImageResource(R.drawable.umbrella);
                         } else {
                             umbrella.setImageResource(R.drawable.umbrellax);
                         }
-                    }
-                });
 
-            }
-        }).start();
-
-        // 대기정보 조회
-        final ImageView mask = (ImageView) findViewById(R.id.mask);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-
-                DustInfo dustInfo = new DustInfo();
-                final boolean isDust = dustInfo.getDustInfo();
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        // TODO Auto-generated method stub
                         if (isDust) {
                             mask.setImageResource(R.drawable.mask);
                         } else {

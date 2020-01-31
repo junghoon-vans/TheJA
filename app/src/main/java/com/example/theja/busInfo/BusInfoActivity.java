@@ -31,12 +31,14 @@ public class BusInfoActivity extends AppCompatActivity {
     // Search BusInfo
     BusInfo busInfo = new BusInfo();
     // BusInfo api key
-    String key = "uXFV5e0IO1Fgdcb6PbNGLRdSdalYvJGYaYrbA3nKpLJguCaPC%2F1P5LgOUvkBJa3sao%2BrRTjXRX0HXoI6wPtf9g%3D%3D";
+    String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bus_info);
+
+        key = getResources().getString(R.string.busApiKey);
 
         // search
         search = (EditText)findViewById(R.id.search);

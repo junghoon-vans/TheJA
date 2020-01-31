@@ -12,8 +12,8 @@ import java.net.URL;
 public class WeatherInfo {
 
     private boolean umbrella = false;
-    private String tempMax = "0";
-    private String tempMin = "0";
+    private String tempMax = "0℃";
+    private String tempMin = "0℃";
 
     private String url = "http://dataservice.accuweather.com" + "/forecasts/v1/daily/1day/";
 
@@ -55,6 +55,7 @@ public class WeatherInfo {
 
             try {
                 JSONObject temp = result.getJSONObject("Temperature");
+                tempMax = temp.getJSONObject("Maximum").getString("Value")+"℃";
                 tempMin = temp.getJSONObject("Minimum").getString("Value")+"℃";
 
                 if(result.getJSONObject("Day").getString("IconPhrase").contains("Rain")){

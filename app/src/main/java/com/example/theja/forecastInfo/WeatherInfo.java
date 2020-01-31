@@ -1,7 +1,5 @@
 package com.example.theja.forecastInfo;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,13 +53,9 @@ public class WeatherInfo {
     private void getWeather(JSONObject result){
         if( result != null ){
 
-            Log.i("@@@", "dd");
             try {
                 JSONObject temp = result.getJSONObject("Temperature");
                 tempMin = temp.getJSONObject("Minimum").getString("Value")+"℃";
-                tempMax = temp.getJSONObject("Maximum").getString("Value")+"℃";
-                Log.i("@@@", tempMin);
-                Log.i("@@@", tempMax);
 
                 if(result.getJSONObject("Day").getString("IconPhrase").contains("Rain")){
                     umbrella = true;

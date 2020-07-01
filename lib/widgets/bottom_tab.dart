@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:theja/widget/bottom_tab_item.dart';
+import 'package:theja/widgets/widgets.dart';
 
 class Bottom extends StatefulWidget {
   @override

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:theja/widget/bottom_bar.dart';
+import 'package:theja/widget/bottom_tab.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(Theja());
 
-class MyApp extends StatefulWidget {
+class Theja extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _MyAppState();
-  }
+  State<StatefulWidget> createState() => _ThejaState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _ThejaState extends State<Theja> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

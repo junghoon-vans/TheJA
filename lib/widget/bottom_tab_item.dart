@@ -12,7 +12,7 @@ class TabItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+        padding: const EdgeInsets.fromLTRB(20, 6, 20, 6),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

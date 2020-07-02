@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class Theja extends StatefulWidget {
-  _ThejaState createState() => _ThejaState();
+class Home extends StatefulWidget {
+  _HomeState createState() => _HomeState();
 }
 
-class _ThejaState extends State<Theja> {
+class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();

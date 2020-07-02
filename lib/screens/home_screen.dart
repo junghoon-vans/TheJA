@@ -10,9 +10,11 @@ class HomeScreen extends StatelessWidget {
     return BlocBuilder<TabBloc, AppTab>(
       builder: (context, activeTab) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text("TheJA"),
-          ),
+          appBar: activeTab == AppTab.home
+              ? null
+              : AppBar(
+                  title: Text("TheJA"),
+                ),
           body: activeTab == AppTab.home ? Theja() : List(),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
@@ -20,7 +22,7 @@ class HomeScreen extends StatelessWidget {
             onPressed: () {},
             child: Container(
               margin: EdgeInsets.all(15.0),
-              child: Icon(Icons.add),
+              child: Icon(activeTab == AppTab.home ? Icons.search : Icons.add),
             ),
             elevation: 4.0,
           ),

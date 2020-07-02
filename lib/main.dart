@@ -12,6 +12,8 @@ class Theja extends StatelessWidget {
     return MaterialApp(
       title: "TheJA",
       initialRoute: '/',
+      theme: ThemeData(
+          highlightColor: Colors.transparent, splashColor: Colors.transparent),
       routes: {
         Routes.home: (context) {
           return MultiBlocProvider(

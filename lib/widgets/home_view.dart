@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
-  _HomeState createState() => _HomeState();
+class HomeView extends StatefulWidget {
+  _HomeViewState createState() => _HomeViewState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();

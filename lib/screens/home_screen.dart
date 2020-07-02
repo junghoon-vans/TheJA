@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
               : AppBar(
                   title: Text("TheJA"),
                 ),
-          body: activeTab == AppTab.home ? Home() : List(),
+          body: activeTab == AppTab.home ? HomeView() : CollectionView(),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: FloatingActionButton(

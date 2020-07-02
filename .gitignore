@@ -1,3 +1,6 @@
+# Test Data
+/lib/data.dart
+
 # Miscellaneous
 *.class
 *.log

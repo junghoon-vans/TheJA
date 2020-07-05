@@ -21,8 +21,7 @@ class Bottom extends StatelessWidget {
                 text: tabs[0],
                 icon: Icons.home,
                 isSelected: activeTab == AppTab.home,
-                onTap: () => BlocProvider.of<TabBloc>(context)
-                    .add(TabUpdated(AppTab.home)),
+                appTab: AppTab.home,
               ),
             ),
             SizedBox(
@@ -34,8 +33,7 @@ class Bottom extends StatelessWidget {
                 text: tabs[1],
                 icon: Icons.list,
                 isSelected: activeTab == AppTab.list,
-                onTap: () => BlocProvider.of<TabBloc>(context)
-                    .add(TabUpdated(AppTab.list)),
+                appTab: AppTab.list,
               ),
             ),
           ],

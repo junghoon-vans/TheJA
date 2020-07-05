@@ -11,9 +11,11 @@ class HomeScreen extends StatelessWidget {
       builder: (context, activeTab) {
         return Scaffold(
           appBar: activeTab == AppTab.home
-              ? null
+              ? AppBar(
+                  title: Text("Home"),
+                )
               : AppBar(
-                  title: Text("TheJA"),
+                  title: Text("Collection"),
                 ),
           body: Stack(
             children: <Widget>[

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:theja/models/models.dart';
 import 'package:theja/models/vehicle_type.dart';
 
-import '../data.dart';
+import 'package:theja/data.dart';
 
 class CollectionCard extends StatefulWidget {
   final int index;

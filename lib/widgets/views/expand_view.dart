@@ -12,7 +12,7 @@ class ExpandView extends StatelessWidget {
         child: AnimatedContainer(
           duration: Duration(milliseconds: 250),
           height: isFabExpand == AppFab.expand
-              ? MediaQuery.of(context).size.height
+              ? MediaQuery.of(context).size.height / 5
               : 10.0,
           width: isFabExpand == AppFab.expand
               ? MediaQuery.of(context).size.height

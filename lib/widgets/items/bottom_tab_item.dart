@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:theja/blocs/fab/fab.dart';
+import 'package:theja/blocs/tab/tab.dart';
+import 'package:theja/models/models.dart';
 
 class TabItem extends StatelessWidget {
   final String text;
   final IconData icon;
   final bool isSelected;
-  final Function onTap;
+  final AppTab appTab;
 
-  const TabItem({Key key, this.text, this.icon, this.isSelected, this.onTap})
+  const TabItem({Key key, this.text, this.icon, this.isSelected, this.appTab})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -32,7 +36,10 @@ class TabItem extends StatelessWidget {
           ],
         ),
       ),
-      onTap: onTap,
+      onTap: () {
+        BlocProvider.of<TabBloc>(context).add(TabUpdated(appTab));
+        BlocProvider.of<FabBloc>(context).add(FabUpdated(AppFab.normal));
+      },
     );
   }
 }

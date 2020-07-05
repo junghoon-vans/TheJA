@@ -1,1 +1,1 @@
-enum AppFab { normal, extend }
+enum AppFab { normal, expand }

@@ -15,17 +15,15 @@ class HomeScreen extends StatelessWidget {
               : AppBar(
                   title: Text("TheJA"),
                 ),
-          body: activeTab == AppTab.home ? HomeView() : CollectionView(),
+          body: Stack(
+            children: <Widget>[
+              activeTab == AppTab.home ? HomeView() : CollectionView(),
+              ExpandView(),
+            ],
+          ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            child: Container(
-              margin: EdgeInsets.all(15.0),
-              child: Icon(activeTab == AppTab.home ? Icons.search : Icons.add),
-            ),
-            elevation: 4.0,
-          ),
+          floatingActionButton: FloatingButton(),
           bottomNavigationBar: BottomAppBar(
             shape: CircularNotchedRectangle(),
             color: Colors.white,

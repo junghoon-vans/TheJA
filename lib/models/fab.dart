@@ -1,0 +1,1 @@
+enum AppFab { normal, extend }

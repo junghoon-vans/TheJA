@@ -4,7 +4,7 @@ import 'package:theja/blocs/tab/tab.dart';
 import 'package:theja/models/tab.dart';
 import 'package:theja/widgets/widgets.dart';
 
-final tabs = ['Home', 'Collection'];
+final tabs = ['Home', 'Collections'];
 
 class Bottom extends StatelessWidget {
   @override

@@ -3,11 +3,11 @@ import 'package:theja/data.dart';
 import 'package:theja/models/models.dart';
 import 'package:theja/widgets/widgets.dart';
 
-class CollectionView extends StatefulWidget {
-  _CollectionView createState() => _CollectionView();
+class VehicleListView extends StatefulWidget {
+  _VehicleListView createState() => _VehicleListView();
 }
 
-class _CollectionView extends State<CollectionView> {
+class _VehicleListView extends State<VehicleListView> {
   @override
   void initState() {
     super.initState();
@@ -20,10 +20,10 @@ class _CollectionView extends State<CollectionView> {
       scrollDirection: Axis.vertical,
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       children: List.generate(
-        collectionList.length,
+        vehicleList.length,
         (index) {
-          return CollectionCard(
-            collectionList,
+          return VehicleListCard(
+            vehicleList,
             index,
             Key('$index'),
           );
@@ -38,8 +38,8 @@ class _CollectionView extends State<CollectionView> {
         if (oldIndex < newIndex) {
           newIndex -= 1;
         }
-        final Collection item = collectionList.removeAt(oldIndex);
-        collectionList.insert(newIndex, item);
+        final Vehicle item = vehicleList.removeAt(oldIndex);
+        vehicleList.insert(newIndex, item);
       },
     );
   }

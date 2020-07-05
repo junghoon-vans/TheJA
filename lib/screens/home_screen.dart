@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
                   title: Text("Home"),
                 )
               : AppBar(
-                  title: Text("Collection"),
+                  title: Text("Collections"),
                 ),
           body: Stack(
             children: <Widget>[

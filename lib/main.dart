@@ -29,6 +29,9 @@ class Theja extends StatelessWidget {
             child: HomeScreen(),
           );
         },
+        Routes.detail: (context) {
+          return ListScreen();
+        }
       },
     );
   }

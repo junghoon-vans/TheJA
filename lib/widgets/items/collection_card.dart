@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theja/models/models.dart';
+import 'package:theja/route.dart';
 
 class CollectionCard extends StatefulWidget {
   final int index;
@@ -20,7 +21,9 @@ class _CollectionCard extends State<CollectionCard> {
       color: Colors.white,
       child: InkWell(
         splashColor: Colors.blue,
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, Routes.detail);
+        },
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

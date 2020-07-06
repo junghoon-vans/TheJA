@@ -10,11 +10,64 @@ class ListScreen extends StatelessWidget {
         actions: <Widget>[
           new IconButton(
             icon: new Icon(Icons.search),
-            onPressed: () {},
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: VehicleSearch(),
+              );
+            },
           ),
         ],
       ),
       body: VehicleListView(),
+    );
+  }
+}
+
+class VehicleSearch extends SearchDelegate<String> {
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.search),
+        onPressed: () {},
+      )
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back_ios),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    final resultList = [];
+
+    return ListView.builder(
+      itemBuilder: (context, index) => ListTile(
+        leading: Icon(Icons.directions_subway),
+        title: Text('${resultList[index]}'),
+      ),
+      itemCount: resultList.length,
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final suggestionList = [];
+
+    return ListView.builder(
+      itemBuilder: (context, index) => ListTile(
+        leading: Icon(Icons.directions_subway),
+        title: Text('${suggestionList[index]}'),
+      ),
+      itemCount: suggestionList.length,
     );
   }
 }

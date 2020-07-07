@@ -1,25 +1,39 @@
-import 'package:equatable/equatable.dart';
+import 'package:theja/utils/db_helper.dart';
 
-class Vehicle extends Equatable {
-  final int _type;
-  final int _id;
-  final String _name;
-  final String _station;
-  final int _stationId;
+class Vehicle {
+  int id;
+  String name;
+  String station;
+  int stationId;
+  int type;
 
-  Vehicle(this._type, this._id, this._name, this._station, this._stationId);
+  Vehicle(this.id, this.name, this.station, this.stationId, this.type);
 
-  @override
-  List<Object> get props => [_type, _id, _name, _station, _stationId];
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      vehicleColumnName: name,
+      vehicleColumnStation: station,
+      vehicleColumnStationId: stationId,
+      vehicleColumnType: type,
+    };
+
+    if (id != null) {
+      map[vehicleColumnId] = id;
+    }
+
+    return map;
+  }
+
+  Vehicle.fromMap(Map<String, dynamic> map) {
+    id = map[vehicleColumnId];
+    name = map[vehicleColumnName];
+    station = map[vehicleColumnStation];
+    stationId = map[vehicleColumnStationId];
+    type = map[vehicleColumnType];
+  }
 
   @override
   String toString() {
-    return '$_name';
+    return '$name';
   }
-
-  int get type => _type;
-  int get id => _id;
-  String get name => _name;
-  String get station => _station;
-  int get stationId => _stationId;
 }

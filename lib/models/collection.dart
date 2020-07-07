@@ -1,17 +1,29 @@
-import 'package:equatable/equatable.dart';
+import 'package:theja/utils/db_helper.dart';
 
-class Collection extends Equatable {
-  final String _name;
+class Collection {
+  int id;
+  String name;
 
-  Collection(this._name);
+  Collection(this.id, this.name);
 
-  @override
-  List<Object> get props => [_name];
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      collectionColumnName: name,
+    };
 
-  @override
-  String toString() {
-    return '$_name';
+    if (id != null) {
+      map[collectionColumnId] = id;
+    }
+
+    return map;
   }
 
-  String get name => _name;
+  Collection.fromMap(Map<String, dynamic> map) {
+    id = map[collectionColumnId];
+    name = map[collectionColumnName];
+  }
+
+  String toString() {
+    return '$name';
+  }
 }

@@ -38,7 +38,7 @@ class _CollectionCard extends State<CollectionCard> {
                         padding: const EdgeInsets.all(15.0),
                         alignment: Alignment.topLeft,
                         child: Text(
-                          '${widget.listItems[widget.index].name}',
+                          '${widget.listItems[widget.index]}',
                           style: TextStyle(
                               fontWeight: FontWeight.normal, fontSize: 16),
                           textAlign: TextAlign.left,

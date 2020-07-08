@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:theja/blocs/tab/tab.dart';
+import 'package:theja/items/items.dart';
 import 'package:theja/models/tab.dart';
-import 'package:theja/widgets/widgets.dart';
 
 final tabs = ['Home', 'Collections'];
 

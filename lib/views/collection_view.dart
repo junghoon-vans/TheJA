@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:theja/blocs/collection/collection.dart';
+import 'package:theja/items/items.dart';
 import 'package:theja/models/models.dart';
 import 'package:theja/utils/db_helper.dart';
-import 'package:theja/widgets/widgets.dart';
 
 class CollectionView extends StatefulWidget {
   _CollectionView createState() => _CollectionView();

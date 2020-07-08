@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:theja/data.dart';
+import 'package:theja/items/items.dart';
 import 'package:theja/models/models.dart';
-import 'package:theja/widgets/widgets.dart';
 
 class VehicleListView extends StatefulWidget {
   _VehicleListView createState() => _VehicleListView();

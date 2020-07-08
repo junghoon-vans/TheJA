@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:theja/blocs/blocs.dart';
 import 'package:theja/models/models.dart';
+import 'package:theja/views/views.dart';
 import 'package:theja/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {

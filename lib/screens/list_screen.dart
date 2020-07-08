@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:theja/widgets/views/vehicle_list_view.dart';
+import 'package:theja/views/views.dart';
 
 class ListScreen extends StatelessWidget {
   @override

@@ -22,7 +22,7 @@ class _CollectionCard extends State<CollectionCard> {
       child: InkWell(
         splashColor: Colors.blue,
         onTap: () {
-          Navigator.pushNamed(context, Routes.detail);
+          Navigator.pushNamed(context, Routes.list);
         },
         child: Row(
           mainAxisSize: MainAxisSize.min,

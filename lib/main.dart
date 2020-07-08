@@ -33,7 +33,7 @@ class Theja extends StatelessWidget {
             child: HomeScreen(),
           );
         },
-        Routes.detail: (context) {
+        Routes.list: (context) {
           return ListScreen();
         }
       },

@@ -4,7 +4,7 @@ class Collection {
   int id;
   String name;
 
-  Collection(this.id, this.name);
+  Collection({this.id, this.name});
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{

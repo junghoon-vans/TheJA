@@ -22,7 +22,8 @@ class _CollectionCard extends State<CollectionCard> {
       child: InkWell(
         splashColor: Colors.blue,
         onTap: () {
-          Navigator.pushNamed(context, Routes.list);
+          Navigator.pushNamed(context, Routes.list,
+              arguments: widget.listItems[widget.index].id);
         },
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -38,7 +39,7 @@ class _CollectionCard extends State<CollectionCard> {
                         padding: const EdgeInsets.all(15.0),
                         alignment: Alignment.topLeft,
                         child: Text(
-                          '${widget.listItems[widget.index]}',
+                          '${widget.listItems[widget.index].name}',
                           style: TextStyle(
                               fontWeight: FontWeight.normal, fontSize: 16),
                           textAlign: TextAlign.left,

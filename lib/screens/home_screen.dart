@@ -1,39 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:theja/blocs/blocs.dart';
-import 'package:theja/models/models.dart';
 import 'package:theja/views/views.dart';
 import 'package:theja/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TabBloc, AppTab>(
-      builder: (context, activeTab) {
-        return Scaffold(
-          appBar: activeTab == AppTab.home
-              ? AppBar(
-                  title: Text("Home"),
-                )
-              : AppBar(
-                  title: Text("Collections"),
-                ),
-          body: Stack(
-            children: <Widget>[
-              activeTab == AppTab.home ? HomeView() : CollectionView(),
-              ExpandView(),
-            ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Collections"),
+        actions: <Widget>[
+          new IconButton(
+            icon: new Icon(Icons.edit),
+            onPressed: () {},
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: FloatingButton(),
-          bottomNavigationBar: BottomAppBar(
-            shape: CircularNotchedRectangle(),
-            color: Colors.white,
-            child: Bottom(),
-          ),
-        );
-      },
+        ],
+      ),
+      body: CollectionView(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingButton(),
     );
   }
 }

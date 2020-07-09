@@ -7,8 +7,9 @@ class FloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        PopUpForm().create(context).then((value) =>
-            value != null ?? CollectionDBHelper().insert(context, value));
+        PopUpForm().create(context).then((value) => value != null
+            ? CollectionDBHelper.db.insert(context, value)
+            : null);
       },
       child: Container(
         margin: EdgeInsets.all(15.0),

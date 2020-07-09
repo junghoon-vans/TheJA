@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:theja/models/models.dart';
-import 'package:theja/models/vehicle_type.dart';
 
 import 'package:theja/data.dart';
 

@@ -8,12 +8,6 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Collections"),
-        actions: <Widget>[
-          new IconButton(
-            icon: new Icon(Icons.edit),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: CollectionView(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

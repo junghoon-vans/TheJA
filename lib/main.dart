@@ -19,9 +19,6 @@ class Theja extends StatelessWidget {
         Routes.home: (context) {
           return MultiBlocProvider(
             providers: [
-              BlocProvider<FabBloc>(
-                create: (context) => FabBloc(),
-              ),
               BlocProvider<CollectionBloc>(
                 create: (context) => CollectionBloc(),
               ),

@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:theja/models/models.dart';
 import 'package:theja/route.dart';
 import 'package:theja/utils/collection_db_helper.dart';
+import 'package:theja/widgets/widgets.dart';
 
 class CollectionCard extends StatefulWidget {
   final int index;
@@ -27,7 +28,18 @@ class _CollectionCard extends State<CollectionCard> {
           caption: 'Edit',
           color: Colors.blue,
           icon: Icons.edit,
-          onTap: () {},
+          onTap: () => PopUpForm()
+              .create(context, PopUpFormMode.edit)
+              .then((value) => value != null
+                  ? {
+                      widget.listItems[widget.index].name = value,
+                      CollectionDBHelper.db.update(
+                        context,
+                        widget.index,
+                        widget.listItems[widget.index],
+                      )
+                    }
+                  : null),
         ),
       ],
       secondaryActions: <Widget>[

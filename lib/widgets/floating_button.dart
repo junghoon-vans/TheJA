@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:theja/models/enums.dart';
 import 'package:theja/utils/collection_db_helper.dart';
 import 'package:theja/widgets/widgets.dart';
 
@@ -7,9 +8,10 @@ class FloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        PopUpForm().create(context).then((value) => value != null
-            ? CollectionDBHelper.db.insert(context, value)
-            : null);
+        PopUpForm().create(context, PopUpFormMode.add).then((value) =>
+            value != null
+                ? CollectionDBHelper.db.insert(context, value)
+                : null);
       },
       child: Container(
         margin: EdgeInsets.all(15.0),

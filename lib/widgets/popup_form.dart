@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:theja/models/enums.dart';
+import 'package:theja/strings.dart';
 
 class PopUpForm {
   TextEditingController textEditingController = TextEditingController();
 
-  Future<String> create(context) {
+  Future<String> create(BuildContext context, PopUpFormMode mode) {
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('컬렉션 추가'),
+          title: Text(mode == PopUpFormMode.add
+              ? Strings.collectionAdd
+              : Strings.collectionEdit),
           content: TextField(
             controller: textEditingController,
           ),

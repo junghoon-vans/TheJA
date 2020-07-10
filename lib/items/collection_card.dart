@@ -22,7 +22,7 @@ class _CollectionCard extends State<CollectionCard> {
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.2,
-      child: createCard(context, widget),
+      child: _card(context, widget),
       actions: <Widget>[
         IconSlideAction(
           caption: 'Edit',
@@ -55,7 +55,7 @@ class _CollectionCard extends State<CollectionCard> {
   }
 }
 
-createCard(context, widget) {
+_card(BuildContext context, widget) {
   return Card(
     margin: EdgeInsets.all(4),
     color: Colors.white,

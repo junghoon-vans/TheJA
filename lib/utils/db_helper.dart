@@ -107,18 +107,39 @@ class DBHelper {
     );
   }
 
-  Future<Vehicle> insertVehicle(Vehicle vehicle) async {
+  Future<int> insertVehicle(Vehicle vehicle, int collectionId) async {
     var db = await database;
 
-    vehicle.id = await db.insert(vehicleTable, vehicle.toMap());
-    return vehicle;
+    int vehicleId = vehicle.id;
+    String vehicleKeyString = vehicle.toMap().keys.toString();
+    List<dynamic> vehicleValueList = vehicle.toMap().values.toList();
+
+    await db.rawInsert('''
+      INSERT INTO $vehicleTable $vehicleKeyString
+      SELECT ?, ?, ?, ?, ? WHERE NOT EXISTS(
+        SELECT 1 FROM $vehicleTable WHERE $vehicleColumnId == $vehicleId
+      );
+    ''', vehicleValueList);
+
+    int isVehicleExist = await db.rawInsert('''
+      INSERT INTO $relationTable (collection_id, vehicle_id)
+      SELECT $collectionId, $vehicleId WHERE NOT EXISTS(
+        SELECT 1 FROM $relationTable 
+        WHERE collection_id == $collectionId AND vehicle_id == $vehicleId
+      );
+    ''');
+
+    return isVehicleExist;
   }
 
-  Future<List<Vehicle>> getVehicles(int id) async {
+  Future<List<Vehicle>> getVehicles(int collectionId) async {
     var db = await database;
 
-    var vehicles = await db
-        .query(vehicleTable, columns: [vehicleColumnId, vehicleColumnName]);
+    var vehicles = await db.rawQuery('''
+      SELECT * FROM $vehicleTable JOIN $relationTable
+      ON $vehicleTable.id == $relationTable.vehicle_id
+      WHERE $relationTable.collection_id == $collectionId;
+    ''');
 
     List<Vehicle> vehicleList = List<Vehicle>();
     vehicles.forEach((element) {
@@ -129,24 +150,13 @@ class DBHelper {
     return vehicleList;
   }
 
-  Future<int> deleteVehicle(int id) async {
+  Future<int> deleteVehicle(int collectionId, int vehicleId) async {
     var db = await database;
 
     return await db.delete(
-      vehicleTable,
-      where: '$vehicleColumnId = ?',
-      whereArgs: [id],
-    );
-  }
-
-  Future<int> updateVehicle(Vehicle vehicle) async {
-    var db = await database;
-
-    return await db.update(
-      vehicleTable,
-      vehicle.toMap(),
-      where: '$vehicleColumnId = ?',
-      whereArgs: [vehicle.id],
+      relationTable,
+      where: 'collection_id = ? AND vehicle_id = ?',
+      whereArgs: [collectionId, vehicleId],
     );
   }
 }

@@ -7,7 +7,7 @@ class Vehicle {
   int stationId;
   int type;
 
-  Vehicle(this.id, this.name, this.station, this.stationId, this.type);
+  Vehicle({this.id, this.name, this.station, this.stationId, this.type});
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{

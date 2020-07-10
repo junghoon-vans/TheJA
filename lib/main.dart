@@ -27,7 +27,11 @@ class Theja extends StatelessWidget {
           );
         },
         Routes.list: (context) {
-          return ListScreen();
+          return MultiBlocProvider(providers: [
+            BlocProvider<VehicleBloc>(
+              create: (context) => VehicleBloc(),
+            )
+          ], child: ListScreen());
         }
       },
     );

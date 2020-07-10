@@ -20,10 +20,8 @@ class CollectionDBHelper {
   }
 
   delete(BuildContext context, int id, int index) {
-    DBHelper.db.deleteCollection(id).then(
-          (_) => BlocProvider.of<CollectionBloc>(context)
-              .add(DeleteCollection(index)),
-        );
+    DBHelper.db.deleteCollection(id).then((_) =>
+        BlocProvider.of<CollectionBloc>(context).add(DeleteCollection(index)));
   }
 
   update(BuildContext context, int index, Collection collection) {

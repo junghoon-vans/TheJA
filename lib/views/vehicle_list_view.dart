@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:theja/data.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:theja/blocs/blocs.dart';
 import 'package:theja/items/items.dart';
 import 'package:theja/models/models.dart';
 
@@ -9,37 +10,34 @@ class VehicleListView extends StatefulWidget {
 
 class _VehicleListView extends State<VehicleListView> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return ReorderableListView(
-      onReorder: _onReorder,
-      scrollDirection: Axis.vertical,
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      children: List.generate(
-        vehicleList.length,
-        (index) {
-          return VehicleListCard(
-            vehicleList,
-            index,
-            Key('$index'),
-          );
-        },
-      ),
-    );
-  }
-
-  void _onReorder(int oldIndex, int newIndex) {
-    setState(
-      () {
-        if (oldIndex < newIndex) {
-          newIndex -= 1;
-        }
-        final Vehicle item = vehicleList.removeAt(oldIndex);
-        vehicleList.insert(newIndex, item);
+    return BlocBuilder<VehicleBloc, List<Vehicle>>(
+      builder: (context, vehicleList) {
+        return ReorderableListView(
+          onReorder: (int oldIndex, int newIndex) {
+            setState(
+              () {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
+                }
+                final Vehicle item = vehicleList.removeAt(oldIndex);
+                vehicleList.insert(newIndex, item);
+              },
+            );
+          },
+          scrollDirection: Axis.vertical,
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          children: List.generate(
+            vehicleList.length,
+            (index) {
+              return VehicleListCard(
+                vehicleList,
+                index,
+                Key('$index'),
+              );
+            },
+          ),
+        );
       },
     );
   }

@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:theja/blocs/blocs.dart';
+import 'package:theja/data.dart';
+import 'package:theja/utils/db_helper.dart';
+import 'package:theja/utils/vehicle_db_helper.dart';
 import 'package:theja/views/views.dart';
 
 class ListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final collectionId = (ModalRoute.of(context).settings.arguments);
+
+    DBHelper.db.getVehicles(collectionId).then(
+          (vehicleList) => BlocProvider.of<VehicleBloc>(context).add(
+            GetVehicles(vehicleList),
+          ),
+        );
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Lists"),
@@ -15,6 +28,7 @@ class ListScreen extends StatelessWidget {
                 context: context,
                 delegate: VehicleSearch(),
               );
+              // VehicleDBHelper.db.insert(context, vehicle, collectionId);
             },
           ),
         ],

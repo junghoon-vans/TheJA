@@ -109,6 +109,23 @@ class DBHelper {
     );
   }
 
+  void reorderCollections(List<Collection> collectionList) async {
+    var db = await database;
+
+    await db.execute('''
+      CREATE TABLE $tempTable(
+        $collectionColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $collectionColumnName TEXT UNIQUE
+      )
+    ''');
+
+    collectionList
+        .forEach((collection) => db.insert(tempTable, collection.toMap()));
+
+    await db.execute('DROP TABLE $collectionTable;');
+    await db.execute('ALTER TABLE $tempTable RENAME TO $collectionTable;');
+  }
+
   Future<int> insertVehicle(Vehicle vehicle, String collectionName) async {
     var db = await database;
 

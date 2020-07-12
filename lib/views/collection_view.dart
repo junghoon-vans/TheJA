@@ -35,6 +35,7 @@ class _CollectionView extends State<CollectionView> {
                 collectionList.insert(newIndex, item);
               },
             );
+            DBHelper.db.reorderCollections(collectionList);
           },
           scrollDirection: Axis.vertical,
           padding: const EdgeInsets.symmetric(vertical: 8.0),

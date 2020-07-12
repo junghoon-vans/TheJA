@@ -119,11 +119,12 @@ class DBHelper {
       )
     ''');
 
-    collectionList
-        .forEach((collection) => db.insert(tempTable, collection.toMap()));
+    collectionList.forEach((collection) {
+      db.insert(tempTable, collection.toMap(reorder: true));
+    });
 
-    await db.execute('DROP TABLE $collectionTable;');
-    await db.execute('ALTER TABLE $tempTable RENAME TO $collectionTable;');
+    await db.execute('DROP TABLE $collectionTable');
+    await db.execute('ALTER TABLE $tempTable RENAME TO $collectionTable');
   }
 
   Future<int> insertVehicle(Vehicle vehicle, String collectionName) async {

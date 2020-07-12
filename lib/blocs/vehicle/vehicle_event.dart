@@ -21,7 +21,7 @@ class AddVehicle extends VehicleEvent {
 class DeleteVehicle extends VehicleEvent {
   int vehicleIndex;
 
-  DeleteVehicle(int index) {
-    vehicleIndex = index;
+  DeleteVehicle(int routeId) {
+    vehicleIndex = routeId;
   }
 }

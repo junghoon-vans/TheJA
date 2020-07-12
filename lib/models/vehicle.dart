@@ -2,22 +2,30 @@ import 'package:theja/utils/db_helper.dart';
 
 class Vehicle {
   int id;
-  String name;
-  String station;
+  int routeId;
+  String routeName;
   int stationId;
+  String station;
   int type;
 
-  Vehicle({this.id, this.name, this.station, this.stationId, this.type});
+  Vehicle(
+      {this.id,
+      this.routeId,
+      this.routeName,
+      this.station,
+      this.stationId,
+      this.type});
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap({bool reorder = false}) {
     var map = <String, dynamic>{
-      vehicleColumnName: name,
-      vehicleColumnStation: station,
+      vehicleColumnRouteId: routeId,
+      vehicleColumnRouteName: routeName,
       vehicleColumnStationId: stationId,
+      vehicleColumnStation: station,
       vehicleColumnType: type,
     };
 
-    if (id != null) {
+    if (id != null && !reorder) {
       map[vehicleColumnId] = id;
     }
 
@@ -26,14 +34,15 @@ class Vehicle {
 
   Vehicle.fromMap(Map<String, dynamic> map) {
     id = map[vehicleColumnId];
-    name = map[vehicleColumnName];
-    station = map[vehicleColumnStation];
+    routeId = map[vehicleColumnRouteId];
+    routeName = map[vehicleColumnRouteName];
     stationId = map[vehicleColumnStationId];
+    station = map[vehicleColumnStation];
     type = map[vehicleColumnType];
   }
 
   @override
   String toString() {
-    return '$name';
+    return '$routeName';
   }
 }

@@ -33,7 +33,7 @@ class _VehicleListCard extends State<VehicleListCard> {
           onTap: () => VehicleDBHelper.db.delete(
               context: context,
               collectionName: (ModalRoute.of(context).settings.arguments),
-              vehicleId: vehicle.id,
+              routeId: vehicle.routeId,
               index: widget.index),
         ),
       ],
@@ -71,7 +71,7 @@ _card(BuildContext context, Vehicle vehicle) {
                         padding: const EdgeInsets.all(8.0),
                         alignment: Alignment.topLeft,
                         child: Text(
-                          '${vehicle.name}',
+                          '${vehicle.routeName}',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                           textAlign: TextAlign.left,

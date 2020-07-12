@@ -18,8 +18,8 @@ class VehicleDBHelper {
   }
 
   delete(
-      {BuildContext context, String collectionName, int vehicleId, int index}) {
-    DBHelper.db.deleteVehicle(collectionName, vehicleId).then(
+      {BuildContext context, String collectionName, int routeId, int index}) {
+    DBHelper.db.deleteVehicle(collectionName, routeId).then(
         (_) => BlocProvider.of<VehicleBloc>(context).add(DeleteVehicle(index)));
   }
 }

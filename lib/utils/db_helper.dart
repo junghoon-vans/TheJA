@@ -182,4 +182,26 @@ class DBHelper {
       whereArgs: [collectionName, vehicleRouteId],
     );
   }
+
+  void reorderVehicles(List<Vehicle> vehicleList) async {
+    var db = await database;
+
+    await db.execute('''
+      CREATE TABLE $tempTable(
+        $vehicleColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $vehicleColumnRouteId INTEGER UNIQUE,
+        $vehicleColumnRouteName TEXT,
+        $vehicleColumnStationId INTEGER,
+        $vehicleColumnStation TEXT,
+        $vehicleColumnType INTEGER
+      )
+    ''');
+
+    vehicleList.forEach((vehicle) {
+      db.insert(tempTable, vehicle.toMap(reorder: true));
+    });
+
+    await db.execute('DROP TABLE $vehicleTable');
+    await db.execute('ALTER TABLE $tempTable RENAME TO $vehicleTable');
+  }
 }

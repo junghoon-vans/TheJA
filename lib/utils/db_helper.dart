@@ -15,6 +15,8 @@ final String vehicleColumnType = 'type';
 
 final String relationTable = 'relation';
 
+final String tempTable = 'temp';
+
 class DBHelper {
   DBHelper._();
   static final DBHelper db = DBHelper._();
@@ -40,7 +42,7 @@ class DBHelper {
     await db.execute('''
       CREATE TABLE $collectionTable(
         $collectionColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $collectionColumnName TEXT
+        $collectionColumnName TEXT UNIQUE
       )
     ''');
 
@@ -56,9 +58,9 @@ class DBHelper {
 
     await db.execute('''
       CREATE TABLE $relationTable(
-        collection_id INTEGER,
+        collection_name TEXT,
         vehicle_id INTEGER,
-        FOREIGN KEY(collection_id) REFERENCES $collectionTable(id),
+        FOREIGN KEY(collection_name) REFERENCES $collectionTable(name),
         FOREIGN KEY(vehicle_id) REFERENCES $vehicleTable(id)
       )
     ''');
@@ -107,7 +109,7 @@ class DBHelper {
     );
   }
 
-  Future<int> insertVehicle(Vehicle vehicle, int collectionId) async {
+  Future<int> insertVehicle(Vehicle vehicle, String collectionName) async {
     var db = await database;
 
     int vehicleId = vehicle.id;
@@ -122,23 +124,23 @@ class DBHelper {
     ''', vehicleValueList);
 
     int isVehicleExist = await db.rawInsert('''
-      INSERT INTO $relationTable (collection_id, vehicle_id)
-      SELECT $collectionId, $vehicleId WHERE NOT EXISTS(
+      INSERT INTO $relationTable (collection_name, vehicle_id)
+      SELECT '$collectionName', $vehicleId WHERE NOT EXISTS(
         SELECT 1 FROM $relationTable 
-        WHERE collection_id == $collectionId AND vehicle_id == $vehicleId
+        WHERE collection_name == '$collectionName' AND vehicle_id == $vehicleId
       );
     ''');
 
     return isVehicleExist;
   }
 
-  Future<List<Vehicle>> getVehicles(int collectionId) async {
+  Future<List<Vehicle>> getVehicles(String collectionName) async {
     var db = await database;
 
     var vehicles = await db.rawQuery('''
       SELECT * FROM $vehicleTable JOIN $relationTable
       ON $vehicleTable.id == $relationTable.vehicle_id
-      WHERE $relationTable.collection_id == $collectionId;
+      WHERE $relationTable.collection_name == '$collectionName';
     ''');
 
     List<Vehicle> vehicleList = List<Vehicle>();
@@ -150,13 +152,13 @@ class DBHelper {
     return vehicleList;
   }
 
-  Future<int> deleteVehicle(int collectionId, int vehicleId) async {
+  Future<int> deleteVehicle(String collectionName, int vehicleId) async {
     var db = await database;
 
     return await db.delete(
       relationTable,
-      where: 'collection_id = ? AND vehicle_id = ?',
-      whereArgs: [collectionId, vehicleId],
+      where: 'collection_name = ? AND vehicle_id = ?',
+      whereArgs: [collectionName, vehicleId],
     );
   }
 }

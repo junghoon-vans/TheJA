@@ -19,10 +19,12 @@ class VehicleListCard extends StatefulWidget {
 class _VehicleListCard extends State<VehicleListCard> {
   @override
   Widget build(BuildContext context) {
+    Vehicle vehicle = widget.listItems[widget.index];
+
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.2,
-      child: _card(context, widget),
+      child: _card(context, vehicle),
       secondaryActions: <Widget>[
         IconSlideAction(
           caption: 'Delete',
@@ -30,8 +32,8 @@ class _VehicleListCard extends State<VehicleListCard> {
           icon: Icons.delete,
           onTap: () => VehicleDBHelper.db.delete(
               context: context,
-              collectionId: (ModalRoute.of(context).settings.arguments),
-              vehicleId: widget.listItems[widget.index].id,
+              collectionName: (ModalRoute.of(context).settings.arguments),
+              vehicleId: vehicle.id,
               index: widget.index),
         ),
       ],
@@ -39,7 +41,7 @@ class _VehicleListCard extends State<VehicleListCard> {
   }
 }
 
-_card(BuildContext context, widget) {
+_card(BuildContext context, Vehicle vehicle) {
   return Card(
     margin: EdgeInsets.all(4),
     color: Colors.white,
@@ -52,7 +54,7 @@ _card(BuildContext context, widget) {
           Padding(
             padding: const EdgeInsets.all(20),
             child: Icon(
-              _icon(widget.listItems[widget.index].type),
+              _icon(vehicle.type),
               color: Colors.grey,
               size: 24.0,
             ),
@@ -69,7 +71,7 @@ _card(BuildContext context, widget) {
                         padding: const EdgeInsets.all(8.0),
                         alignment: Alignment.topLeft,
                         child: Text(
-                          '${widget.listItems[widget.index].name}',
+                          '${vehicle.name}',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                           textAlign: TextAlign.left,
@@ -80,7 +82,7 @@ _card(BuildContext context, widget) {
                         padding: const EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          '${widget.listItems[widget.index].station}',
+                          '${vehicle.station}',
                           style: TextStyle(
                               fontWeight: FontWeight.normal, fontSize: 16),
                           textAlign: TextAlign.left,

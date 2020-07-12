@@ -19,10 +19,12 @@ class CollectionCard extends StatefulWidget {
 class _CollectionCard extends State<CollectionCard> {
   @override
   Widget build(BuildContext context) {
+    Collection collection = widget.listItems[widget.index];
+
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.2,
-      child: _card(context, widget),
+      child: _card(context, collection),
       actions: <Widget>[
         IconSlideAction(
           caption: 'Edit',
@@ -32,7 +34,7 @@ class _CollectionCard extends State<CollectionCard> {
               .create(context, PopUpFormMode.edit)
               .then((value) => value != null
                   ? {
-                      widget.listItems[widget.index].name = value,
+                      collection.name = value,
                       CollectionDBHelper.db.update(
                         context,
                         widget.index,
@@ -55,15 +57,14 @@ class _CollectionCard extends State<CollectionCard> {
   }
 }
 
-_card(BuildContext context, widget) {
+_card(BuildContext context, Collection collection) {
   return Card(
     margin: EdgeInsets.all(4),
     color: Colors.white,
     child: InkWell(
       splashColor: Colors.blue,
       onTap: () {
-        Navigator.pushNamed(context, Routes.list,
-            arguments: widget.listItems[widget.index].id);
+        Navigator.pushNamed(context, Routes.list, arguments: collection.name);
       },
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -79,7 +80,7 @@ _card(BuildContext context, widget) {
                       padding: const EdgeInsets.all(15.0),
                       alignment: Alignment.topLeft,
                       child: Text(
-                        '${widget.listItems[widget.index].name}',
+                        '${collection.name}',
                         style: TextStyle(
                             fontWeight: FontWeight.normal, fontSize: 16),
                         textAlign: TextAlign.left,

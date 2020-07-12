@@ -9,9 +9,9 @@ import 'package:theja/views/views.dart';
 class ListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final collectionId = (ModalRoute.of(context).settings.arguments);
+    String collectionName = (ModalRoute.of(context).settings.arguments);
 
-    DBHelper.db.getVehicles(collectionId).then(
+    DBHelper.db.getVehicles(collectionName).then(
           (vehicleList) => BlocProvider.of<VehicleBloc>(context).add(
             GetVehicles(vehicleList),
           ),
@@ -24,11 +24,11 @@ class ListScreen extends StatelessWidget {
           new IconButton(
             icon: new Icon(Icons.search),
             onPressed: () {
-              showSearch(
-                context: context,
-                delegate: VehicleSearch(),
-              );
-              // VehicleDBHelper.db.insert(context, vehicle, collectionId);
+              // showSearch(
+              //   context: context,
+              //   delegate: VehicleSearch(),
+              // );
+              VehicleDBHelper.db.insert(context, vehicle, collectionName);
             },
           ),
         ],

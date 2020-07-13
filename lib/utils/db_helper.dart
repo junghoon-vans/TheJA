@@ -35,8 +35,13 @@ class DBHelper {
     return await openDatabase(
       join(dbPath, 'sqlite.db'),
       version: 1,
+      onConfigure: _onConfigure,
       onCreate: _onCreate,
     );
+  }
+
+  Future _onConfigure(Database db) async {
+    await db.execute('PRAGMA foreign_keys = ON');
   }
 
   void _onCreate(Database db, int version) async {
@@ -62,7 +67,7 @@ class DBHelper {
       CREATE TABLE $relationTable(
         collection_name TEXT,
         vehicle_route_id INTEGER,
-        FOREIGN KEY(collection_name) REFERENCES $collectionTable(name),
+        FOREIGN KEY(collection_name) REFERENCES $collectionTable(name) ON DELETE CASCADE,
         FOREIGN KEY(vehicle_route_id) REFERENCES $vehicleTable(route_id)
       )
     ''');

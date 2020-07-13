@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:theja/blocs/blocs.dart';
 import 'package:theja/items/items.dart';
 import 'package:theja/models/models.dart';
-import 'package:theja/utils/db_helper.dart';
+import 'package:theja/utils/vehicle_db_helper.dart';
 
 class VehicleListView extends StatefulWidget {
   _VehicleListView createState() => _VehicleListView();
@@ -25,7 +25,7 @@ class _VehicleListView extends State<VehicleListView> {
                 vehicleList.insert(newIndex, item);
               },
             );
-            DBHelper.db.reorderVehicles(vehicleList);
+            VehicleDBHelper.db.reorder(vehicleList);
           },
           scrollDirection: Axis.vertical,
           padding: const EdgeInsets.symmetric(vertical: 8.0),

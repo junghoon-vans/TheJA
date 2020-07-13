@@ -36,9 +36,9 @@ class _CollectionCard extends State<CollectionCard> {
                   ? {
                       collection.name = value,
                       CollectionDBHelper.db.update(
-                        context,
-                        widget.index,
-                        widget.listItems[widget.index],
+                        context: context,
+                        widgetIndex: widget.index,
+                        collection: collection,
                       )
                     }
                   : null),
@@ -49,8 +49,10 @@ class _CollectionCard extends State<CollectionCard> {
           caption: 'Delete',
           color: Colors.red,
           icon: Icons.delete,
-          onTap: () => CollectionDBHelper.db
-              .delete(context, widget.listItems[widget.index].id, widget.index),
+          onTap: () => CollectionDBHelper.db.delete(
+              context: context,
+              widgetIndex: widget.index,
+              collectionId: collection.id),
         ),
       ],
     );

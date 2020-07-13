@@ -9,7 +9,7 @@ class VehicleDBHelper {
 
   static final VehicleDBHelper db = VehicleDBHelper._();
 
-  insert(BuildContext context, Vehicle vehicle, String collectionName) {
+  insert({BuildContext context, Vehicle vehicle, String collectionName}) {
     DBHelper.db.insertVehicle(vehicle, collectionName).then(
           (isVehicleExist) => isVehicleExist != null
               ? BlocProvider.of<VehicleBloc>(context).add(AddVehicle(vehicle))
@@ -17,9 +17,20 @@ class VehicleDBHelper {
         );
   }
 
+  Future<List<Vehicle>> get(String collectionName) {
+    return DBHelper.db.getVehicles(collectionName);
+  }
+
   delete(
-      {BuildContext context, String collectionName, int routeId, int index}) {
-    DBHelper.db.deleteVehicle(collectionName, routeId).then(
-        (_) => BlocProvider.of<VehicleBloc>(context).add(DeleteVehicle(index)));
+      {BuildContext context,
+      int widgetIndex,
+      String collectionName,
+      int routeId}) {
+    DBHelper.db.deleteVehicle(collectionName, routeId).then((_) =>
+        BlocProvider.of<VehicleBloc>(context).add(DeleteVehicle(widgetIndex)));
+  }
+
+  reorder(List<Vehicle> vehicleList) {
+    DBHelper.db.reorderVehicles(vehicleList);
   }
 }

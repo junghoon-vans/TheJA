@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:theja/blocs/collection/collection.dart';
 import 'package:theja/items/items.dart';
 import 'package:theja/models/models.dart';
-import 'package:theja/utils/db_helper.dart';
+import 'package:theja/utils/collection_db_helper.dart';
 
 class CollectionEditView extends StatefulWidget {
   _CollectionEditView createState() => _CollectionEditView();
@@ -13,7 +13,7 @@ class _CollectionEditView extends State<CollectionEditView> {
   @override
   void initState() {
     super.initState();
-    DBHelper.db.getCollections().then(
+    CollectionDBHelper.db.get().then(
           (collectionList) => BlocProvider.of<CollectionBloc>(context).add(
             GetCollections(collectionList),
           ),

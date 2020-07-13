@@ -19,6 +19,7 @@ class VehicleListCard extends StatefulWidget {
 class _VehicleListCard extends State<VehicleListCard> {
   @override
   Widget build(BuildContext context) {
+    String collectionName = ModalRoute.of(context).settings.arguments;
     Vehicle vehicle = widget.listItems[widget.index];
 
     return Slidable(
@@ -31,10 +32,11 @@ class _VehicleListCard extends State<VehicleListCard> {
           color: Colors.red,
           icon: Icons.delete,
           onTap: () => VehicleDBHelper.db.delete(
-              context: context,
-              collectionName: (ModalRoute.of(context).settings.arguments),
-              routeId: vehicle.routeId,
-              index: widget.index),
+            context: context,
+            widgetIndex: widget.index,
+            collectionName: collectionName,
+            routeId: vehicle.routeId,
+          ),
         ),
       ],
     );

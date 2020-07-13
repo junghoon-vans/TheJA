@@ -9,8 +9,8 @@ class CollectionDBHelper {
 
   static final CollectionDBHelper db = CollectionDBHelper._();
 
-  insert(BuildContext context, String value) {
-    Collection collection = Collection(name: value);
+  insert({BuildContext context, String collectionName}) {
+    Collection collection = Collection(name: collectionName);
 
     DBHelper.db.insertCollection(collection).then(
           (storedCollection) => BlocProvider.of<CollectionBloc>(context).add(
@@ -19,16 +19,25 @@ class CollectionDBHelper {
         );
   }
 
-  delete(BuildContext context, int id, int index) {
-    DBHelper.db.deleteCollection(id).then((_) =>
-        BlocProvider.of<CollectionBloc>(context).add(DeleteCollection(index)));
+  Future<List<Collection>> get() {
+    return DBHelper.db.getCollections();
   }
 
-  update(BuildContext context, int index, Collection collection) {
+  delete({BuildContext context, int widgetIndex, int collectionId}) {
+    DBHelper.db.deleteCollection(collectionId).then((_) =>
+        BlocProvider.of<CollectionBloc>(context)
+            .add(DeleteCollection(widgetIndex)));
+  }
+
+  update({BuildContext context, int widgetIndex, Collection collection}) {
     DBHelper.db.updateCollection(collection).then(
-          (storedCollection) => BlocProvider.of<CollectionBloc>(context).add(
-            UpdateCollection(index, collection),
+          (_) => BlocProvider.of<CollectionBloc>(context).add(
+            UpdateCollection(widgetIndex, collection),
           ),
         );
+  }
+
+  reorder(List<Collection> collectionList) {
+    DBHelper.db.reorderCollections(collectionList);
   }
 }

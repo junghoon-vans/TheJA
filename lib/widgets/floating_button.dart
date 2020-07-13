@@ -10,7 +10,8 @@ class FloatingButton extends StatelessWidget {
       onPressed: () {
         PopUpForm().create(context, PopUpFormMode.add).then((value) =>
             value != null
-                ? CollectionDBHelper.db.insert(context, value)
+                ? CollectionDBHelper.db
+                    .insert(context: context, collectionName: value)
                 : null);
       },
       child: Container(

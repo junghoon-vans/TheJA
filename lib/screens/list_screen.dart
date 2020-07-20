@@ -28,9 +28,10 @@ class ListScreen extends StatelessWidget {
               //   delegate: VehicleSearch(),
               // );
               VehicleDBHelper.db.insert(
-                  context: context,
-                  vehicle: vehicle,
-                  collectionName: collectionName);
+                context: context,
+                collectionName: collectionName,
+                vehicle: vehicle,
+              );
             },
           ),
         ],

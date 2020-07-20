@@ -47,19 +47,20 @@ class DBHelper {
   void _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE $collectionTable(
-        $collectionColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $collectionColumnName TEXT UNIQUE
+        $collectionColumnId INTEGER,
+        $collectionColumnName TEXT PRIMARY KEY
       )
     ''');
 
     await db.execute('''
       CREATE TABLE $vehicleTable(
-        $vehicleColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $vehicleColumnRouteId INTEGER UNIQUE,
+        $vehicleColumnId INTEGER,
+        $vehicleColumnRouteId INTEGER,
         $vehicleColumnRouteName TEXT,
         $vehicleColumnStationId INTEGER,
         $vehicleColumnStation TEXT,
-        $vehicleColumnType INTEGER
+        $vehicleColumnType INTEGER,
+        PRIMARY KEY($vehicleColumnRouteId, $vehicleColumnStationId)
       )
     ''');
 
@@ -67,8 +68,9 @@ class DBHelper {
       CREATE TABLE $relationTable(
         collection_name TEXT,
         vehicle_route_id INTEGER,
+        vehicle_station_id INTEGER,
         FOREIGN KEY(collection_name) REFERENCES $collectionTable(name) ON DELETE CASCADE,
-        FOREIGN KEY(vehicle_route_id) REFERENCES $vehicleTable(route_id)
+        FOREIGN KEY(vehicle_route_id, vehicle_station_id) REFERENCES $vehicleTable(route_id, station_id) ON DELETE CASCADE
       )
     ''');
   }
@@ -76,7 +78,11 @@ class DBHelper {
   Future<Collection> insertCollection(Collection collection) async {
     var db = await database;
 
-    collection.id = await db.insert(collectionTable, collection.toMap());
+    String collectionName = collection.name;
+    collection.id = await db.rawInsert("""
+      INSERT INTO $collectionTable (id, name)
+      VALUES((SELECT IFNULL(MAX(id), 0) + 1 FROM $collectionTable), $collectionName)
+    """);
     return collection;
   }
 
@@ -121,8 +127,8 @@ class DBHelper {
 
     await db.execute('''
       CREATE TABLE $tempTable(
-        $collectionColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $collectionColumnName TEXT UNIQUE
+        $collectionColumnId INTEGER,
+        $collectionColumnName TEXT PRIMARY KEY
       )
     ''');
 
@@ -134,25 +140,31 @@ class DBHelper {
     await db.execute('ALTER TABLE $tempTable RENAME TO $collectionTable');
   }
 
-  Future<int> insertVehicle(Vehicle vehicle, String collectionName) async {
+  Future<int> insertVehicle(String collectionName, Vehicle vehicle) async {
     var db = await database;
 
     int vehicleRouteId = vehicle.routeId;
-    String vehicleKeyString = vehicle.toMap().keys.toString();
+    int vehicleStationId = vehicle.stationId;
+
     List<dynamic> vehicleValueList = vehicle.toMap().values.toList();
 
     await db.rawInsert('''
-      INSERT INTO $vehicleTable $vehicleKeyString
-      SELECT ?, ?, ?, ?, ? WHERE NOT EXISTS(
-        SELECT 1 FROM $vehicleTable WHERE $vehicleColumnRouteId == $vehicleRouteId
+      INSERT INTO $vehicleTable (id, route_id, route_name, station_id, station, type)
+      SELECT (SELECT IFNULL(MAX(id), 0) + 1 FROM $vehicleTable), ?, ?, ?, ?, ? 
+      WHERE NOT EXISTS(
+        SELECT 1 FROM $vehicleTable 
+        WHERE $vehicleColumnRouteId == $vehicleRouteId
+        AND $vehicleColumnStationId == $vehicleStationId
       );
     ''', vehicleValueList);
 
     int isVehicleExist = await db.rawInsert('''
-      INSERT INTO $relationTable (collection_name, vehicle_route_id)
-      SELECT '$collectionName', $vehicleRouteId WHERE NOT EXISTS(
+      INSERT INTO $relationTable (collection_name, vehicle_route_id, vehicle_station_id)
+      SELECT $collectionName, $vehicleRouteId, $vehicleStationId WHERE NOT EXISTS(
         SELECT 1 FROM $relationTable 
-        WHERE collection_name == '$collectionName' AND vehicle_route_id == $vehicleRouteId
+        WHERE collection_name == '$collectionName'
+        AND vehicle_route_id == $vehicleRouteId
+        AND vehicle_station_id == $vehicleStationId
       );
     ''');
 
@@ -178,13 +190,15 @@ class DBHelper {
     return vehicleList;
   }
 
-  Future<int> deleteVehicle(String collectionName, int vehicleRouteId) async {
+  Future<int> deleteVehicle(
+      String collectionName, int vehicleRouteId, int vehicleStationId) async {
     var db = await database;
 
     return await db.delete(
       relationTable,
-      where: 'collection_name = ? AND vehicle_route_id = ?',
-      whereArgs: [collectionName, vehicleRouteId],
+      where:
+          'collection_name = ? AND vehicle_route_id = ? AND vehicle_station_id = ?',
+      whereArgs: [collectionName, vehicleRouteId, vehicleStationId],
     );
   }
 
@@ -193,12 +207,13 @@ class DBHelper {
 
     await db.execute('''
       CREATE TABLE $tempTable(
-        $vehicleColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $vehicleColumnRouteId INTEGER UNIQUE,
+        $vehicleColumnId INTEGER,
+        $vehicleColumnRouteId INTEGER,
         $vehicleColumnRouteName TEXT,
         $vehicleColumnStationId INTEGER,
         $vehicleColumnStation TEXT,
-        $vehicleColumnType INTEGER
+        $vehicleColumnType INTEGER,
+        PRIMARY KEY($vehicleColumnRouteId, $vehicleColumnStationId)
       )
     ''');
 

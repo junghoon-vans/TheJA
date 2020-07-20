@@ -9,8 +9,8 @@ class VehicleDBHelper {
 
   static final VehicleDBHelper db = VehicleDBHelper._();
 
-  insert({BuildContext context, Vehicle vehicle, String collectionName}) {
-    DBHelper.db.insertVehicle(vehicle, collectionName).then(
+  insert({BuildContext context, String collectionName, Vehicle vehicle}) {
+    DBHelper.db.insertVehicle(collectionName, vehicle).then(
           (isVehicleExist) => isVehicleExist != null
               ? BlocProvider.of<VehicleBloc>(context).add(AddVehicle(vehicle))
               : null,
@@ -25,8 +25,9 @@ class VehicleDBHelper {
       {BuildContext context,
       int widgetIndex,
       String collectionName,
-      int routeId}) {
-    DBHelper.db.deleteVehicle(collectionName, routeId).then((_) =>
+      int routeId,
+      int stationId}) {
+    DBHelper.db.deleteVehicle(collectionName, routeId, stationId).then((_) =>
         BlocProvider.of<VehicleBloc>(context).add(DeleteVehicle(widgetIndex)));
   }
 

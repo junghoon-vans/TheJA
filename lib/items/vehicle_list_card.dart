@@ -36,6 +36,7 @@ class _VehicleListCard extends State<VehicleListCard> {
             widgetIndex: widget.index,
             collectionName: collectionName,
             routeId: vehicle.routeId,
+            stationId: vehicle.stationId,
           ),
         ),
       ],

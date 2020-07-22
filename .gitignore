@@ -1,5 +1,6 @@
 # Test Data
 /lib/data.dart
+/lib/authenticate.dart
 
 # Miscellaneous
 *.class

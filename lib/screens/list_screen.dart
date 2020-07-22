@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:theja/blocs/blocs.dart';
-import 'package:theja/data.dart';
+import 'package:theja/models/models.dart';
+import 'package:theja/utils/bus_info_parser.dart';
 import 'package:theja/utils/vehicle_db_helper.dart';
 import 'package:theja/views/views.dart';
 
@@ -23,14 +24,9 @@ class ListScreen extends StatelessWidget {
           new IconButton(
             icon: new Icon(Icons.search),
             onPressed: () {
-              // showSearch(
-              //   context: context,
-              //   delegate: VehicleSearch(),
-              // );
-              VehicleDBHelper.db.insert(
+              showSearch(
                 context: context,
-                collectionName: collectionName,
-                vehicle: vehicle,
+                delegate: VehicleSearch(),
               );
             },
           ),
@@ -55,7 +51,7 @@ class VehicleSearch extends SearchDelegate<String> {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back_ios),
+      icon: Icon(Icons.arrow_back),
       onPressed: () {
         close(context, null);
       },
@@ -64,14 +60,26 @@ class VehicleSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    final resultList = [];
-
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        leading: Icon(Icons.directions_subway),
-        title: Text('${resultList[index]}'),
-      ),
-      itemCount: resultList.length,
+    return FutureBuilder<List<Vehicle>>(
+      future: BusInfoParser.bus.searchStation(query),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Vehicle> stationList = snapshot.data;
+          return ListView.builder(
+            itemBuilder: (context, index) => ListTile(
+              leading: Icon(
+                _icon(stationList[index].type),
+                color: Colors.grey,
+                size: 24.0,
+              ),
+              title: Text('${stationList[index].stationName}'),
+            ),
+            itemCount: stationList.length,
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
     );
   }
 
@@ -86,5 +94,16 @@ class VehicleSearch extends SearchDelegate<String> {
       ),
       itemCount: suggestionList.length,
     );
+  }
+}
+
+_icon(int type) {
+  switch (VehicleType.values[type]) {
+    case VehicleType.bus:
+      return Icons.directions_bus;
+    case VehicleType.train:
+      return Icons.directions_subway;
+    case VehicleType.walk:
+      return Icons.directions_walk;
   }
 }

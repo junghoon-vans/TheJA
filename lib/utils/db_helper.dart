@@ -11,7 +11,7 @@ final String vehicleColumnId = 'id';
 final String vehicleColumnRouteId = 'route_id';
 final String vehicleColumnRouteName = 'route_name';
 final String vehicleColumnStationId = 'station_id';
-final String vehicleColumnStation = 'station';
+final String vehicleColumnStationName = 'station';
 final String vehicleColumnType = 'type';
 
 final String relationTable = 'relation';
@@ -58,7 +58,7 @@ class DBHelper {
         $vehicleColumnRouteId INTEGER,
         $vehicleColumnRouteName TEXT,
         $vehicleColumnStationId INTEGER,
-        $vehicleColumnStation TEXT,
+        $vehicleColumnStationName TEXT,
         $vehicleColumnType INTEGER,
         PRIMARY KEY($vehicleColumnRouteId, $vehicleColumnStationId)
       )
@@ -211,7 +211,7 @@ class DBHelper {
         $vehicleColumnRouteId INTEGER,
         $vehicleColumnRouteName TEXT,
         $vehicleColumnStationId INTEGER,
-        $vehicleColumnStation TEXT,
+        $vehicleColumnStationName TEXT,
         $vehicleColumnType INTEGER,
         PRIMARY KEY($vehicleColumnRouteId, $vehicleColumnStationId)
       )

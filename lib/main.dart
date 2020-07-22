@@ -30,7 +30,7 @@ class Theja extends StatelessWidget {
           return MultiBlocProvider(providers: [
             BlocProvider<VehicleBloc>(
               create: (context) => VehicleBloc(),
-            )
+            ),
           ], child: ListScreen());
         }
       },

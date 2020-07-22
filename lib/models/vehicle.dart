@@ -5,14 +5,14 @@ class Vehicle {
   int routeId;
   String routeName;
   int stationId;
-  String station;
+  String stationName;
   int type;
 
   Vehicle(
       {this.id,
       this.routeId,
       this.routeName,
-      this.station,
+      this.stationName,
       this.stationId,
       this.type});
 
@@ -21,7 +21,7 @@ class Vehicle {
       vehicleColumnRouteId: routeId,
       vehicleColumnRouteName: routeName,
       vehicleColumnStationId: stationId,
-      vehicleColumnStation: station,
+      vehicleColumnStationName: stationName,
       vehicleColumnType: type,
     };
 
@@ -37,7 +37,7 @@ class Vehicle {
     routeId = map[vehicleColumnRouteId];
     routeName = map[vehicleColumnRouteName];
     stationId = map[vehicleColumnStationId];
-    station = map[vehicleColumnStation];
+    stationName = map[vehicleColumnStationName];
     type = map[vehicleColumnType];
   }
 

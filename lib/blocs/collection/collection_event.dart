@@ -1,4 +1,4 @@
-import 'package:theja/models/collection.dart';
+import 'package:theja/models/models.dart';
 
 abstract class CollectionEvent {}
 

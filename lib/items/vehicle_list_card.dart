@@ -85,7 +85,7 @@ _card(BuildContext context, Vehicle vehicle) {
                         padding: const EdgeInsets.all(8.0),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          '${vehicle.station}',
+                          '${vehicle.stationName}',
                           style: TextStyle(
                               fontWeight: FontWeight.normal, fontSize: 16),
                           textAlign: TextAlign.left,

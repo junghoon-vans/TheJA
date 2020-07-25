@@ -70,7 +70,7 @@ class DBHelper {
         vehicle_route_id INTEGER,
         vehicle_station_id INTEGER,
         FOREIGN KEY(collection_name) REFERENCES $collectionTable(name) ON DELETE CASCADE,
-        FOREIGN KEY(vehicle_route_id, vehicle_station_id) REFERENCES $vehicleTable(route_id, station_id) ON DELETE CASCADE
+        FOREIGN KEY(vehicle_route_id, vehicle_station_id) REFERENCES $vehicleTable(route_id, station_id)
       )
     ''');
   }
@@ -81,7 +81,7 @@ class DBHelper {
     String collectionName = collection.name;
     collection.id = await db.rawInsert("""
       INSERT INTO $collectionTable (id, name)
-      VALUES((SELECT IFNULL(MAX(id), 0) + 1 FROM $collectionTable), $collectionName)
+      VALUES((SELECT IFNULL(MAX(id), 0) + 1 FROM $collectionTable), '$collectionName')
     """);
     return collection;
   }
@@ -160,11 +160,12 @@ class DBHelper {
 
     int isVehicleExist = await db.rawInsert('''
       INSERT INTO $relationTable (collection_name, vehicle_route_id, vehicle_station_id)
-      SELECT $collectionName, $vehicleRouteId, $vehicleStationId WHERE NOT EXISTS(
+      SELECT '$collectionName', $vehicleRouteId, $vehicleStationId
+      WHERE NOT EXISTS(
         SELECT 1 FROM $relationTable 
-        WHERE collection_name == '$collectionName'
-        AND vehicle_route_id == $vehicleRouteId
-        AND vehicle_station_id == $vehicleStationId
+        WHERE collection_name = '$collectionName'
+        AND vehicle_route_id = $vehicleRouteId
+        AND vehicle_station_id = $vehicleStationId
       );
     ''');
 

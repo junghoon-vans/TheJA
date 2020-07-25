@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:theja/blocs/blocs.dart';
 import 'package:theja/items/items.dart';
 import 'package:theja/models/models.dart';
-import 'package:theja/utils/vehicle_db_helper.dart';
 
 class VehicleListView extends StatefulWidget {
   _VehicleListView createState() => _VehicleListView();
@@ -14,19 +13,7 @@ class _VehicleListView extends State<VehicleListView> {
   Widget build(BuildContext context) {
     return BlocBuilder<VehicleBloc, List<Vehicle>>(
       builder: (context, vehicleList) {
-        return ReorderableListView(
-          onReorder: (int oldIndex, int newIndex) {
-            setState(
-              () {
-                if (oldIndex < newIndex) {
-                  newIndex -= 1;
-                }
-                final Vehicle item = vehicleList.removeAt(oldIndex);
-                vehicleList.insert(newIndex, item);
-              },
-            );
-            VehicleDBHelper.db.reorder(vehicleList);
-          },
+        return ListView(
           scrollDirection: Axis.vertical,
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           children: List.generate(

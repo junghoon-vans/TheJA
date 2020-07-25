@@ -32,7 +32,10 @@ class Theja extends StatelessWidget {
               create: (context) => VehicleBloc(),
             ),
           ], child: ListScreen());
-        }
+        },
+        Routes.result: (context) {
+          return ResultScreen();
+        },
       },
     );
   }

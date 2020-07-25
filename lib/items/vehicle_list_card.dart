@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:theja/models/models.dart';
+import 'package:theja/utils/bus_info_parser.dart';
 
-import 'package:theja/data.dart';
 import 'package:theja/utils/vehicle_db_helper.dart';
 
 class VehicleListCard extends StatefulWidget {
@@ -45,80 +45,92 @@ class _VehicleListCard extends State<VehicleListCard> {
 }
 
 _card(BuildContext context, Vehicle vehicle) {
-  return Card(
-    margin: EdgeInsets.all(4),
-    color: Colors.white,
-    child: InkWell(
-      splashColor: Colors.blue,
-      onTap: () {},
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Icon(
-              _icon(vehicle.type),
-              color: Colors.grey,
-              size: 24.0,
-            ),
-          ),
-          Flexible(
+  return FutureBuilder<Map<int, String>>(
+    future: getArr(vehicle.stationId, vehicle.routeId),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        Map<int, String> arr = snapshot.data;
+        print(arr);
+        return Card(
+          margin: EdgeInsets.all(4),
+          color: Colors.white,
+          child: InkWell(
+            splashColor: Colors.blue,
+            onTap: () {},
             child: Row(
-              mainAxisSize: MainAxisSize.max,
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          '${vehicle.routeName}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                          textAlign: TextAlign.left,
-                          maxLines: 5,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '${vehicle.stationName}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 16),
-                          textAlign: TextAlign.left,
-                          maxLines: 5,
-                        ),
-                      ),
-                    ],
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Icon(
+                    _icon(vehicle.type),
+                    color: Colors.grey,
+                    size: 24.0,
                   ),
                 ),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                Flexible(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          arr1,
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 16),
-                          textAlign: TextAlign.left,
-                          maxLines: 5,
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.all(8.0),
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                '${vehicle.routeName}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                                textAlign: TextAlign.left,
+                                maxLines: 5,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(8.0),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '${vehicle.stationName}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 16),
+                                textAlign: TextAlign.left,
+                                maxLines: 5,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          arr2,
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 16),
-                          textAlign: TextAlign.left,
-                          maxLines: 5,
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.all(8.0),
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                arr[0],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 16),
+                                textAlign: TextAlign.left,
+                                maxLines: 5,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(8.0),
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                arr[1],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 16),
+                                textAlign: TextAlign.left,
+                                maxLines: 5,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -127,17 +139,11 @@ _card(BuildContext context, Vehicle vehicle) {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Icon(
-              Icons.reorder,
-              color: Colors.grey,
-              size: 24.0,
-            ),
-          ),
-        ],
-      ),
-    ),
+        );
+      } else {
+        return Container();
+      }
+    },
   );
 }
 
@@ -150,4 +156,9 @@ _icon(int type) {
     case VehicleType.walk:
       return Icons.directions_walk;
   }
+}
+
+Future<Map<int, String>> getArr(int stationId, int routeId) async {
+  return await BusInfoParser.bus
+      .getArr(stationId.toString(), routeId.toString());
 }

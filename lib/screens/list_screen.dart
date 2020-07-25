@@ -12,11 +12,10 @@ class ListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String collectionName = ModalRoute.of(context).settings.arguments;
 
-    VehicleDBHelper.db.get(collectionName).then(
-          (vehicleList) => BlocProvider.of<VehicleBloc>(context).add(
-            GetVehicles(vehicleList),
-          ),
-        );
+    VehicleDBHelper.db.get(collectionName).then((vehicleList) {
+      BlocProvider.of<VehicleBloc>(context).add(GetVehicles(vehicleList));
+
+    });
 
     return Scaffold(
       appBar: AppBar(

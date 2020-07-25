@@ -16,6 +16,11 @@ class Vehicle {
       this.stationId,
       this.type});
 
+  @override
+  String toString() {
+    return '$routeName';
+  }
+
   Map<String, dynamic> toMap({bool reorder = false}) {
     var map = <String, dynamic>{
       vehicleColumnRouteId: routeId,
@@ -39,10 +44,5 @@ class Vehicle {
     stationId = map[vehicleColumnStationId];
     stationName = map[vehicleColumnStationName];
     type = map[vehicleColumnType];
-  }
-
-  @override
-  String toString() {
-    return '$routeName';
   }
 }

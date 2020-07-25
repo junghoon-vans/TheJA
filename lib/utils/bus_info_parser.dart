@@ -38,7 +38,6 @@ class BusInfoParser {
         stationId +
         "&");
     var raw = xml.parse(xmlString);
-    print(raw);
     var elements = raw.findAllElements("itemList");
 
     List<Vehicle> busList = List<Vehicle>();
@@ -52,6 +51,27 @@ class BusInfoParser {
       busList.add(bus);
     });
     return busList;
+  }
+
+  Future<Map<int, String>> getArr(String stationId, String routeId) async {
+    String xmlString = await fetchDocument(searchRouteUri +
+        "?serviceKey=" +
+        serviceKey +
+        "&stId=" +
+        stationId +
+        "&");
+    var raw = xml.parse(xmlString);
+    var elements = raw.findAllElements("itemList");
+
+    Map<int, String> arr = Map<int, String>();
+    for (var element in elements) {
+      if (element.findElements("busRouteId").first.text == routeId) {
+        arr[0] = (element.findElements("arrmsg1").first.text);
+        arr[1] = (element.findElements("arrmsg2").first.text);
+        break;
+      }
+    }
+    return arr;
   }
 
   Future<String> fetchDocument(String uri) async {

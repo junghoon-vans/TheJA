@@ -14,7 +14,6 @@ class ListScreen extends StatelessWidget {
 
     VehicleDBHelper.db.get(collectionName).then((vehicleList) {
       BlocProvider.of<VehicleBloc>(context).add(GetVehicles(vehicleList));
-
     });
 
     return Scaffold(
@@ -28,10 +27,16 @@ class ListScreen extends StatelessWidget {
                 context: context,
                 delegate: VehicleSearch(),
               );
-              stationId != null
-                  ? Navigator.pushNamed(context, Routes.result,
-                      arguments: Arguments(stationId, collectionName))
-                  : null;
+              if (stationId != null) {
+                await Navigator.pushNamed(context, Routes.result,
+                        arguments: Arguments(stationId, collectionName))
+                    .then(
+                  (vehicle) => VehicleDBHelper.db.insert(
+                      context: context,
+                      collectionName: collectionName,
+                      vehicle: vehicle),
+                );
+              }
             },
           ),
         ],

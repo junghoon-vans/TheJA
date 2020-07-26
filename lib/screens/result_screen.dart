@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theja/models/models.dart';
 import 'package:theja/utils/bus_info_parser.dart';
-import 'package:theja/utils/vehicle_db_helper.dart';
 
 class ResultScreen extends StatelessWidget {
   @override
@@ -19,19 +18,16 @@ class ResultScreen extends StatelessWidget {
             List<Vehicle> vehicleList = snapshot.data;
             return ListView.builder(
               itemBuilder: (context, index) => ListTile(
-                  leading: Icon(
-                    _icon(vehicleList[index].type),
-                    color: Colors.grey,
-                    size: 24.0,
-                  ),
-                  title: Text('${vehicleList[index].routeName}'),
-                  onTap: () {
-                    VehicleDBHelper.db.insert(
-                        context: context,
-                        collectionName: args.collectionName,
-                        vehicle: vehicleList[index]);
-                    Navigator.pop(context);
-                  }),
+                leading: Icon(
+                  _icon(vehicleList[index].type),
+                  color: Colors.grey,
+                  size: 24.0,
+                ),
+                title: Text('${vehicleList[index].routeName}'),
+                onTap: () {
+                  Navigator.pop(context, vehicleList[index]);
+                },
+              ),
               itemCount: vehicleList.length,
             );
           } else {

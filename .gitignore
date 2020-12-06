@@ -1,5 +1,4 @@
-# Test Data
-/lib/data.dart
+# API keys
 /lib/authenticate.dart
 
 # Miscellaneous

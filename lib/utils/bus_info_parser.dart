@@ -3,19 +3,15 @@ import 'package:xml/xml.dart' as xml;
 
 import 'package:theja/models/models.dart';
 import 'package:theja/authenticate.dart';
+import 'package:theja/strings.dart';
 
 class BusInfoParser {
   BusInfoParser._();
   static final BusInfoParser bus = BusInfoParser._();
 
-  String searchStationUri =
-      "http://openapi.gbis.go.kr/ws/rest/busstationservice";
-  String searchRouteUri =
-      "http://ws.bus.go.kr/api/rest/arrive/getLowArrInfoByStId";
-
   Future<List<Vehicle>> searchStation(String keyword) async {
     String xmlString = await fetchDocument(
-        searchStationUri + "?serviceKey=" + serviceKey + "&keyword=" + keyword);
+        Strings.searchStationUri + "?serviceKey=" + serviceKey + "&keyword=" + keyword);
     var raw = xml.parse(xmlString);
     var elements = raw.findAllElements("busStationList");
 
@@ -31,7 +27,7 @@ class BusInfoParser {
   }
 
   Future<List<Vehicle>> searchVehicle(String stationId) async {
-    String xmlString = await fetchDocument(searchRouteUri +
+    String xmlString = await fetchDocument(Strings.searchRouteUri +
         "?serviceKey=" +
         serviceKey +
         "&stId=" +
@@ -54,7 +50,7 @@ class BusInfoParser {
   }
 
   Future<Map<int, String>> getArr(String stationId, String routeId) async {
-    String xmlString = await fetchDocument(searchRouteUri +
+    String xmlString = await fetchDocument(Strings.searchRouteUri +
         "?serviceKey=" +
         serviceKey +
         "&stId=" +

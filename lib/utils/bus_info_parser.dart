@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
 
 import 'package:theja/models/models.dart';
-import 'package:theja/authenticate.dart';
+import 'package:theja/auth/keys.dart';
 import 'package:theja/strings.dart';
 
 class BusInfoParser {
@@ -10,8 +10,12 @@ class BusInfoParser {
   static final BusInfoParser bus = BusInfoParser._();
 
   Future<List<Vehicle>> searchStation(String keyword) async {
-    String xmlString = await fetchDocument(
-        Strings.searchStationUri + "?serviceKey=" + serviceKey + "&keyword=" + keyword);
+    Secret secret = await SecretLoader(secretPath: "secrets.json").load();
+    String xmlString = await fetchDocument(Strings.searchStationUri +
+        "?serviceKey=" +
+        secret.apiKey +
+        "&keyword=" +
+        keyword);
     var raw = xml.parse(xmlString);
     var elements = raw.findAllElements("busStationList");
 
@@ -27,9 +31,10 @@ class BusInfoParser {
   }
 
   Future<List<Vehicle>> searchVehicle(String stationId) async {
+    Secret secret = await SecretLoader(secretPath: "secrets.json").load();
     String xmlString = await fetchDocument(Strings.searchRouteUri +
         "?serviceKey=" +
-        serviceKey +
+        secret.apiKey +
         "&stId=" +
         stationId +
         "&");
@@ -50,9 +55,10 @@ class BusInfoParser {
   }
 
   Future<Map<int, String>> getArr(String stationId, String routeId) async {
+    Secret secret = await SecretLoader(secretPath: "secrets.json").load();
     String xmlString = await fetchDocument(Strings.searchRouteUri +
         "?serviceKey=" +
-        serviceKey +
+        secret.apiKey +
         "&stId=" +
         stationId +
         "&");

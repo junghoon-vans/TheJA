@@ -6,14 +6,15 @@ import 'package:theja/auth/keys.dart';
 import 'package:theja/strings.dart';
 
 class BusInfoParser {
-  BusInfoParser._();
+  final SecretLoader secretLoader;
+  BusInfoParser._({this.secretLoader = const SecretLoader()});
   static final BusInfoParser bus = BusInfoParser._();
 
   Future<List<Vehicle>> searchStation(String keyword) async {
-    Secret secret = await SecretLoader(secretPath: "secrets.json").load();
+    final apiKey = await _apiKey();
     String xmlString = await fetchDocument(Strings.searchStationUri +
         "?serviceKey=" +
-        secret.apiKey +
+        apiKey +
         "&keyword=" +
         keyword);
     var raw = xml.parse(xmlString);
@@ -31,10 +32,10 @@ class BusInfoParser {
   }
 
   Future<List<Vehicle>> searchVehicle(String stationId) async {
-    Secret secret = await SecretLoader(secretPath: "secrets.json").load();
+    final apiKey = await _apiKey();
     String xmlString = await fetchDocument(Strings.searchRouteUri +
         "?serviceKey=" +
-        secret.apiKey +
+        apiKey +
         "&stId=" +
         stationId +
         "&");
@@ -55,10 +56,10 @@ class BusInfoParser {
   }
 
   Future<Map<int, String>> getArr(String stationId, String routeId) async {
-    Secret secret = await SecretLoader(secretPath: "secrets.json").load();
+    final apiKey = await _apiKey();
     String xmlString = await fetchDocument(Strings.searchRouteUri +
         "?serviceKey=" +
-        secret.apiKey +
+        apiKey +
         "&stId=" +
         stationId +
         "&");
@@ -79,5 +80,15 @@ class BusInfoParser {
   Future<String> fetchDocument(String uri) async {
     http.Response response = await http.get(uri);
     return response.body;
+  }
+
+  Future<String> _apiKey() async {
+    try {
+      final secret = await secretLoader.load();
+      return secret.thejaApiKey;
+    } catch (exception) {
+      print(exception);
+      return "";
+    }
   }
 }

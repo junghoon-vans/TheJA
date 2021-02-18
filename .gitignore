@@ -1,5 +1,5 @@
 # API keys
-/lib/auth/secrets.json
+/assets/secrets.json
 
 # Miscellaneous
 *.class
